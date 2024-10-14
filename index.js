@@ -1,11 +1,15 @@
-const session = require('express-session');
-const exphbs = require('express-handlebars');
-const bcrypt = require('bcrypt');
-const mongoose = require('mongoose');
-const express = require('express');
+import session from 'express-session';
+import exphbs from 'express-handlebars';
+import bcrypt from 'bcrypt';
+import mongoose from 'mongoose';
+import express from 'express';
+import dotenv from 'dotenv';
+import connectDB from './server/dbConnect.js';
+
 const app = express();
-require('dotenv').config();
 const PORT = process.env.PORT;
+dotenv.config();
+connectDB();
 
 // Middleware
 // TODO: Move middleware to /server/middleware
