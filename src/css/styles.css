@@ -106,3 +106,8 @@ body {
     margin-top: 2rem;
     border-radius: 10px;
 }
+#our-products {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
