@@ -5,6 +5,8 @@ import mongoose from 'mongoose';
 import express from 'express';
 import dotenv from 'dotenv';
 import connectDB from './server/dbConnect.js';
+import productsRouter from './server/api/products.js';
+import indexRouter from './server/api/index.js';
 
 const app = express();
 const PORT = process.env.PORT;
@@ -21,16 +23,11 @@ app.use(session({
   saveUninitialized: false,
   cookie: {secure: false}
 }));
-// TODO: Uncomment lines below when HBS files are being used
-//app.engine('.hbs', exphbs.engine({ extname: '.hbs', defaultLayout: 'INSERT_LANDING_PAGE_NAME_HERE'})); 
-//app.set('view engine', '.hbs');
+app.engine('.hbs', exphbs.engine({ extname: '.hbs', defaultLayout: 'index'})); 
+app.set('view engine', '.hbs');
 
-// Routes
-// TODO: Move routes to /routes
-// TODO: Edit routes when HBS is being used
-app.get('/', (req, res) => {
-  res.sendFile('./src/index.html', { root: __dirname });
-});
+app.use('/', productsRouter);
+app.use('/', indexRouter);
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);

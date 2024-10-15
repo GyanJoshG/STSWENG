@@ -5,6 +5,7 @@ const ProductSchema = new mongoose.Schema(
       name: { type: String, trim: true },
       price: { type: Number },
       stock: { type: Number },
+      sold: { type: Number },
       isAvailable: { type: Boolean },
       type: { type: String, trim: true }, // might have to change this to enum
       occasion: { type: String, trim: true }, // might have to change this to enum
