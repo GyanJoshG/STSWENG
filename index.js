@@ -6,6 +6,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import connectDB from './server/dbConnect.js';
 import productsRouter from './server/api/products.js';
+import customersRouter from './server/api/customers.js';
 import indexRouter from './server/api/index.js';
 
 const app = express();
@@ -27,6 +28,7 @@ app.engine('.hbs', exphbs.engine({ extname: '.hbs', defaultLayout: 'index'}));
 app.set('view engine', '.hbs');
 
 app.use('/', productsRouter);
+app.use('/', customersRouter);
 app.use('/', indexRouter);
 
 app.listen(PORT, () => {
