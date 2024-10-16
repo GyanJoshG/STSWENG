@@ -12,7 +12,7 @@ router.get('/api/customers', async (req, res) => {
         res.status(200).json({ "data": customers });
     } catch (err) {
         console.error(err);
-        res.status(200).json({ "error": err.message });
+        res.status(500).json({ "error": err.message });
     }
 });
 
