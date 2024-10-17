@@ -2,6 +2,24 @@ document.addEventListener('DOMContentLoaded', () => {
     let cart = [];
     let currentSlide = 0;
     const slides = document.querySelectorAll('.slideshow img');
+    
+    async function getProductsData() {
+        const result = await $.get('/api/products');
+        console.log(result);
+        return result.data;
+    }
+
+    function createProducts() {
+        const products = getProductsData();
+
+        // TODO: Continue the code below
+        products.forEach(product => {
+            const productElement = document.createElement('div');
+            productElement.innerHTML = `
+            <img src=
+            `;
+        });
+    }
 
     function addToCart(name, price) {
         cart.push({ name, price });
