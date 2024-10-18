@@ -9,6 +9,7 @@ const ProductSchema = new mongoose.Schema(
       isAvailable: { type: Boolean },
       type: { type: String, trim: true }, // might have to change this to enum
       occasion: { type: String, trim: true }, // might have to change this to enum
+      imgSrc: { type: String, trim: true }, 
     },
     { versionKey: false }
   );
