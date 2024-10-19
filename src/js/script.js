@@ -2,24 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let cart = [];
     let currentSlide = 0;
     const slides = document.querySelectorAll('.slideshow img');
-    
-    async function getProductsData() {
-        const result = await $.get('/api/products');
-        console.log(result);
-        return result.data;
-    }
-
-    function createProducts() {
-        const products = getProductsData();
-
-        // TODO: Continue the code below
-        products.forEach(product => {
-            const productElement = document.createElement('div');
-            productElement.innerHTML = `
-            <img src=
-            `;
-        });
-    }
+    const productsSection = document.querySelectorAll('.products');
+    let productId = 0;
 
     function addToCart(name, price) {
         cart.push({ name, price });
@@ -29,6 +13,35 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateCart() {
         const cartElement = document.getElementById('cart');
         cartElement.textContent = `Cart: ${cart.length} items`;
+    }
+    
+    async function getProductsData() {
+        const result = await $.get('/api/products');
+        console.log(result);
+        return result.data;
+    }
+
+    async function createProducts() {
+        const products = await getProductsData();
+
+        // Add products to products section
+        products.forEach((product) => {
+            const productElement = document.createElement('div');
+            productElement.id = productId;
+            productElement.className = 'product';
+            productElement.innerHTML = `
+            <img src=${product.imgSrc} alt="${product.name}" />
+            <h3>${product.name}</h3>
+            <p>₱${product.price}</p>`;
+            
+            const button = document.createElement('button');
+            button.textContent = 'Add to Cart';
+            button.onclick = () => addToCart(product.name, product.price);
+            productElement.appendChild(button);
+
+            productsSection[0].appendChild(productElement);
+            productId++;
+        });
     }
 
     function showSlide(index) {
@@ -46,4 +59,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     setInterval(nextSlide, 5000); // Change slide every 5 seconds
+    createProducts();
 });
