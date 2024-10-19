@@ -1,18 +1,8 @@
-// TODO: Implement controller to routes
 import express from 'express';
-import ProductSchema from './../../schemas/ProductSchema.js';
+import productsController from './../../controllers/productsController.js';
 const router = express.Router();
 
 // GET products
-router.get('/api/products', async (req, res) => {
-    try {
-        const products = await ProductSchema.find();
-        console.log(products);
-        res.status(200).json({ "data": products });
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).json({ "error": err.message });
-    }
-});
+router.get('/api/products', productsController.getProducts);
 
 export default router;
