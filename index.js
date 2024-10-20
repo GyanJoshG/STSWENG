@@ -15,10 +15,9 @@ dotenv.config();
 connectDB();
 
 // Middleware
-// TODO: Move middleware to /server/middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('src')); // TODO: Change 'src' to 'public' when the src folder is renamed to public
+app.use(express.static('public'));
 app.use(session({
   secret: 'secretkey',
   resave: false,
