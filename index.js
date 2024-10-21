@@ -5,6 +5,9 @@ import mongoose from 'mongoose';
 import express from 'express';
 import dotenv from 'dotenv';
 import connectDB from './server/dbConnect.js';
+import productsRouter from './server/api/products.js';
+import customersRouter from './server/api/customers.js';
+import indexRouter from './server/api/index.js';
 
 const app = express();
 const PORT = process.env.PORT;
@@ -12,24 +15,24 @@ dotenv.config();
 connectDB();
 
 // Middleware
-// TODO: Move middleware to /server/middleware
 app.use(express.json());
-app.use(express.static('src')); // TODO: Change 'src' to 'public' when the src folder is renamed to public
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
 app.use(session({
   secret: 'secretkey',
   resave: false,
   saveUninitialized: false,
   cookie: {secure: false}
 }));
-// TODO: Uncomment lines below when HBS files are being used
-//app.engine('.hbs', exphbs.engine({ extname: '.hbs', defaultLayout: 'INSERT_LANDING_PAGE_NAME_HERE'})); 
-//app.set('view engine', '.hbs');
+app.engine('.hbs', exphbs.engine({ extname: '.hbs', defaultLayout: 'main'})); 
+app.set('view engine', '.hbs');
 
-// Routes
-// TODO: Move routes to /routes
-// TODO: Edit routes when HBS is being used
-app.get('/', (req, res) => {
-  res.sendFile('./src/index.html', { root: __dirname });
+app.use('/', productsRouter);
+app.use('/', customersRouter);
+app.use('/', indexRouter);
+
+app.use((req, res) => {
+  res.status(404).render('handling', { title: 'Page Not Found', body: 'Error 404. Page not found.' });
 });
 
 app.listen(PORT, () => {
