@@ -62,10 +62,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             productElement.innerHTML = `
             <img src=${product.imgSrc} alt="${product.name}" />
             <h3>${product.name}</h3>
-            <p>₱${product.price}</p>`;
+            <p>₱${product.price}</p>
+            <p>Stock: ${product.stock}</p>`;
             
             const button = document.createElement('button');
-            button.textContent = 'Add to Cart';
+            if(product.stock == 0) {
+                button.disabled = true;
+                button.textContent = 'Out of Stock';
+            } else {
+                button.textContent = 'Add to Cart';
+            }
             button.onclick = () => addToCart(product.name, product.price);
             productElement.appendChild(button);
 
