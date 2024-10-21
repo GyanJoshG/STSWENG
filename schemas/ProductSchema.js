@@ -10,6 +10,7 @@ const ProductSchema = new mongoose.Schema(
       type: { type: String, trim: true }, // might have to change this to enum
       occasion: { type: String, trim: true }, // might have to change this to enum
       imgSrc: { type: String, trim: true }, 
+      color: { type: String, trim: true }, // might have to change this to enum
     },
     { versionKey: false }
   );

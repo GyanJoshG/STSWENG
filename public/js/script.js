@@ -1,9 +1,12 @@
-document.addEventListener('DOMContentLoaded', () => {
-    let cart = [];
-    let currentSlide = 0;
+document.addEventListener('DOMContentLoaded', async () => {
+    // HTML elements
     const slides = document.querySelectorAll('.slideshow img');
     const productsSection = document.querySelectorAll('.products');
+
+    let cart = [];
+    let currentSlide = 0;
     let productId = 0;
+    const productsData = await getProductsData();
 
     function addToCart(name, price) {
         cart.push({ name, price });
@@ -16,12 +19,40 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     async function getProductsData() {
-        const result = await $.get('/api/products');
-        return result;
+        const products = await $.get('/api/products');
+        return products;
     }
 
-    async function createProducts() {
-        const products = await getProductsData();
+    function filterProductsData() {
+        const filter = document.getElementById('filter').value;
+
+        // Filter products based on filter value
+        const filteredProducts = productsData.filter((product) => {
+            if(filter == 'color-mixed') {
+                return product.color == 'mixed';
+            } else if(filter == 'color-red') {
+                return product.color == 'red';
+            } else if(filter == 'color-yellow') {
+                return product.color == 'yellow';
+            } else if(filter == 'occasion-any') {
+                return product.occasion == 'any';
+            } else if(filter == 'type-arrangement') {
+                return product.type == 'arrangement';
+            } else if(filter == 'type-bouquet') {
+                return product.type == 'bouquet';
+            } else if(filter == 'type-garden') {
+                return product.type == 'garden';
+            } else {
+                return true;        
+            }
+        });
+
+        return filteredProducts;
+    }
+
+    function createProducts() {
+        productsSection[0].innerHTML = '';   
+        const products = filterProductsData();
         
         // Add products to products section
         products.forEach((product) => {
@@ -59,4 +90,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setInterval(nextSlide, 5000); // Change slide every 5 seconds
     createProducts();
+    filter.onchange = createProducts;
 });
