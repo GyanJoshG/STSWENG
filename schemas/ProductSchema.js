@@ -2,12 +2,14 @@ import mongoose from "mongoose";
 
 const ProductSchema = new mongoose.Schema(
     {
-      productName: { type: String, trim: true },
+      name: { type: String, trim: true },
       price: { type: Number },
       stock: { type: Number },
-      isSold: { type: Boolean },
-      productType: { type: String, trim: true }, // might have to change this to enum
-      occasion: { type: String, trim: true }, // might have tto change this to enum
+      sold: { type: Number },
+      isAvailable: { type: Boolean },
+      type: { type: String, trim: true }, // might have to change this to enum
+      occasion: { type: String, trim: true }, // might have to change this to enum
+      imgSrc: { type: String, trim: true }, 
     },
     { versionKey: false }
   );
