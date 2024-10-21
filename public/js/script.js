@@ -28,7 +28,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Filter products based on filter value
         const filteredProducts = productsData.filter((product) => {
-            if(filter == 'occasion-any') {
+            if(filter == 'color-mixed') {
+                return product.color == 'mixed';
+            } else if(filter == 'color-red') {
+                return product.color == 'red';
+            } else if(filter == 'color-yellow') {
+                return product.color == 'yellow';
+            } else if(filter == 'occasion-any') {
                 return product.occasion == 'any';
             } else if(filter == 'type-arrangement') {
                 return product.type == 'arrangement';
