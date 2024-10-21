@@ -92,6 +92,10 @@ body {
 .product button:hover {
     background-color: #ffd700;
 }
+button:disabled:hover {
+    background-color: #ffe5b4;
+    cursor: default;
+}
 #cart {
     position: fixed;
     right: 1rem;
