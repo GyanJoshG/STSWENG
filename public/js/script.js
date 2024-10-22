@@ -1,7 +1,3 @@
-let cart = [];
-let currentSlide = 0;
-const slides = document.querySelectorAll('.slideshow img');
-
 document.addEventListener('DOMContentLoaded', async () => {
     // HTML elements
     const slides = document.querySelectorAll('.slideshow img');
@@ -70,13 +66,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             <p>Stock: ${product.stock}</p>`;
             
             const button = document.createElement('button');
+            
             if(product.stock == 0) {
-                button.disabled = true;
                 button.textContent = 'Out of Stock';
+                button.disabled = true;
+                productElement.classList.add('out-of-stock');
             } else {
                 button.textContent = 'Add to Cart';
+                button.onclick = () => addToCart(product.name, product.price);
             }
-            button.onclick = () => addToCart(product.name, product.price);
+            
             productElement.appendChild(button);
 
             productsSection[0].appendChild(productElement);
