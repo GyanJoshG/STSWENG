@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // HTML elements
     const slides = document.querySelectorAll('.slideshow img');
     const productsSection = document.querySelectorAll('.products');
+    const filter = document.getElementById('filter');
 
     let cart = [];
     let currentSlide = 0;
@@ -24,23 +25,23 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function filterProductsData() {
-        const filter = document.getElementById('filter').value;
+        const filterVal = filter.value;
 
         // Filter products based on filter value
         const filteredProducts = productsData.filter((product) => {
-            if(filter == 'color-mixed') {
+            if(filterVal == 'color-mixed') {
                 return product.color == 'mixed';
-            } else if(filter == 'color-red') {
+            } else if(filterVal == 'color-red') {
                 return product.color == 'red';
-            } else if(filter == 'color-yellow') {
+            } else if(filterVal == 'color-yellow') {
                 return product.color == 'yellow';
-            } else if(filter == 'occasion-any') {
+            } else if(filterVal == 'occasion-any') {
                 return product.occasion == 'any';
-            } else if(filter == 'type-arrangement') {
+            } else if(filterVal == 'type-arrangement') {
                 return product.type == 'arrangement';
-            } else if(filter == 'type-bouquet') {
+            } else if(filterVal == 'type-bouquet') {
                 return product.type == 'bouquet';
-            } else if(filter == 'type-garden') {
+            } else if(filterVal == 'type-garden') {
                 return product.type == 'garden';
             } else {
                 return true;        
