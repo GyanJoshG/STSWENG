@@ -22,4 +22,4 @@ const CustomerSchema = new mongoose.Schema(
   );
 
 const Customer = mongoose.model("Customer", CustomerSchema);
-export default mongoose.models.Custoemr || Customer;
+export default mongoose.models.Customer || Customer;

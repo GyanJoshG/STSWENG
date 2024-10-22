@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flower Buds Boutique</title>
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <img src = "https://via.placeholder.com/200x50?text=Logo+Here" alt="Logo">
+        <a href="#home">Home</a>
+        <a href="#products">Products</a>
+        <a href="#about-contact">About & Contact</a>
+        <div id="cart">Cart: 0 items</div>
+    </nav>
+
+    <div class="container">
+        <section id="home">
+            <h1>Welcome to Flower Buds Boutique</h1>
+            <div class="slideshow">
+                <img src="https://via.placeholder.com/1200x400?text=Beautiful+Flowers+1" alt="Slideshow 1" class="active">
+                <img src="https://via.placeholder.com/1200x400?text=Colorful+Arrangements+2" alt="Slideshow 2">
+                <img src="https://via.placeholder.com/1200x400?text=Elegant+Bouquets+3" alt="Slideshow 3">
+                <button class="slideshow-btn prev" onclick="changeSlide(-1)">&#10094;</button>
+                <button class="slideshow-btn next" onclick="changeSlide(1)">&#10095;</button>
+            </div>
+        </section>
+
+        <section id="products">
+            <span id="our-products">
+                <h2>Our Products</h2>
+                <span>
+                    <label for="#sort-by">Sort By: </label>
+                    <select id="sort-by">
+                        <option>None</option>
+                        <option value="type">Type</option>
+                        <option value="occasion">Occasion</option>
+                        <option value="color">Color</option>
+                    </select> 
+                </span>
+            </span>
+            <div class="products">
+                <div class="product">
+                    <img src="https://via.placeholder.com/150?text=Custom+Bouquet" alt="Custom Bouquet">
+                    <h3>Custom Bouquet</h3>
+                    <p>₱999</p>
+                    <button onclick="addToCart('Lovely Bouquet', 999)">Add to Cart</button>
+                </div>
+                <div class="product">
+                    <img src="https://via.placeholder.com/150?text=Spring+Arrangement" alt="Spring Arrangement">
+                    <h3>Spring Arrangement</h3>
+                    <p>₱999</p>
+                    <button onclick="addToCart('Spring Arrangement', 999)">Add to Cart</button>
+                </div>
+                <div class="product">
+                    <img src="https://via.placeholder.com/150?text=Succulent+Garden" alt="Succulent Garden">
+                    <h3>Succulent Garden</h3>
+                    <p>₱999</p>
+                    <button onclick="addToCart('Succulent Garden', 999)">Add to Cart</button>
+                </div>
+                <div class="product">
+                    <img src="https://via.placeholder.com/150?text=Rose+Bouquet" alt="Rose Bouquet">
+                    <h3>Rose Bouquet</h3>
+                    <p>₱999</p>
+                    <button onclick="addToCart('Rose Bouquet', 999)">Add to Cart</button>
+                </div>
+
+                <div class="product">
+                    <img src="https://via.placeholder.com/150?text=Sunflower+Bouquet" alt="Sunflower Bouquet">
+                    <h3>Sunflower Bouquet</h3>
+                    <p>₱999</p>
+                    <button onclick="addToCart('Sunflower Bouquet', 999)">Add to Cart</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="about-contact" class="about-contact">
+            <h2>About Us & Contact Information</h2>
+            <p>Flower Buds Boutique is your one-stop shop for beautiful floral arrangements and gifts. We pride ourselves on delivering fresh, high-quality flowers for all occasions.</p>
+            <h3>Contact Us</h3>
+            <p>Email: info@flowerbudsboutique.com</p>
+            <p>Phone: (555) 123-4567</p>
+            <p>Location: 123 Blossom Street, Flowertown, FL 12345</p>
+            <p>Hours of Operation:</p>
+            <ul>
+                <li>Monday - Friday: 9:00 AM - 6:00 PM</li>
+                <li>Saturday: 10:00 AM - 4:00 PM</li>
+                <li>Sunday: Closed</li>
+            </ul>
+        </section>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

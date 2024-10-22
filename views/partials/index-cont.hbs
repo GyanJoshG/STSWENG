@@ -1,0 +1,56 @@
+<!-- TODO: Move onclick events to script.js -->
+<nav class="navbar">
+    <img src = "https://via.placeholder.com/200x50?text=Logo+Here" alt="Logo">
+    <a href="#home">Home</a>
+    <a href="#products">Products</a>
+    <a href="#about-contact">About & Contact</a>
+    <div id="cart">Cart: 0 items</div>
+</nav>
+
+<div class="container">
+    <section id="home">
+        <h1>Welcome to Flower Buds Boutique</h1>
+        <div class="slideshow">
+            <img src="https://via.placeholder.com/1200x400?text=Beautiful+Flowers+1" alt="Slideshow 1" class="active">
+            <img src="https://via.placeholder.com/1200x400?text=Colorful+Arrangements+2" alt="Slideshow 2">
+            <img src="https://via.placeholder.com/1200x400?text=Elegant+Bouquets+3" alt="Slideshow 3">
+            <button class="slideshow-btn prev" onclick="changeSlide(-1)">&#10094;</button>
+            <button class="slideshow-btn next" onclick="changeSlide(1)">&#10095;</button>
+        </div>
+    </section>
+
+    <section id="products">
+        <span id="our-products">
+            <h2>Our Products</h2>
+            <span>
+                <label for="#filter">Sort By: </label>
+                <select id="filter">
+                    <option>None</option>
+                    <option value="color-mixed">Color: Mixed</option>
+                    <option value="color-red">Color: Red</option>
+                    <option value="color-yellow">Color: Yellow</option>
+                    <option value="occasion-any">Occasion: Any</option>
+                    <option value="type-arrangement">Type: Arrangement</option>
+                    <option value="type-bouquet">Type: Bouquet</option>
+                    <option value="type-garden">Type: Garden</option>
+                </select> 
+            </span>
+        </span>
+        <div class="products"></div>
+    </section>
+
+    <section id="about-contact" class="about-contact">
+        <h2>About Us & Contact Information</h2>
+        <p>Flower Buds Boutique is your one-stop shop for beautiful floral arrangements and gifts. We pride ourselves on delivering fresh, high-quality flowers for all occasions.</p>
+        <h3>Contact Us</h3>
+        <p>Email: info@flowerbudsboutique.com</p>
+        <p>Phone: (555) 123-4567</p>
+        <p>Location: 123 Blossom Street, Flowertown, FL 12345</p>
+        <p>Hours of Operation:</p>
+        <ul>
+            <li>Monday - Friday: 9:00 AM - 6:00 PM</li>
+            <li>Saturday: 10:00 AM - 4:00 PM</li>
+            <li>Sunday: Closed</li>
+        </ul>
+    </section>
+</div>
