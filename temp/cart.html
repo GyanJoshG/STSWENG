@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart - Flower Buds Boutique</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../public/css/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <img src="https://via.placeholder.com/200x50?text=Logo+Here" alt="Logo" class="logo">
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="index.html#products">Products</a>
+            <a href="index.html#about-contact">About & Contact</a>
+        </div>
+        <div class="nav-icons">
+            <a href="login.html" class="icon-link" id="login">
+                <img src="https://via.placeholder.com/24?text=User" alt="Login Icon">
+                <span>Login</span>
+            </a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Your Cart</h1>
+        <div id="cart-content">
+            <!-- Cart items will be inserted here -->
+        </div>
+        <div id="cart-total">
+            <h2>Total: ₱<span id="total-amount">0</span></h2>
+        </div>
+        <button id="checkout-btn" class="btn">Proceed to Checkout</button>
+    </div>
+
+    <script src="../public/js/cart.js"></script>
+</body>
+</html>
