@@ -1,100 +1,61 @@
-document.addEventListener('DOMContentLoaded', async () => {
-    // HTML elements
-    const slides = document.querySelectorAll('.slideshow img');
-    const productsSection = document.querySelectorAll('.products');
+let cart = [];
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slideshow img');
 
-    let cart = [];
-    let currentSlide = 0;
-    let productId = 0;
-    const productsData = await getProductsData();
+// function addToCart(name, price) {
+//     const productElement = event.target.closest('.product');
+//     if (productElement.classList.contains('out-of-stock')) {
+//         alert('Sorry, this product is out of stock.');
+//         return;
+//     }
+//     cart.push({ name, price });
+//     updateCart();
+// }
 
-    function addToCart(name, price) {
-        cart.push({ name, price });
-        updateCart();
-    }
-
-    function updateCart() {
-        const cartElement = document.getElementById('cart');
-        cartElement.textContent = `Cart: ${cart.length} items`;
+function addToCart(name, price) {
+    const productElement = event.target.closest('.product');
+    if (productElement.classList.contains('out-of-stock')) {
+        alert('Sorry, this product is out of stock.');
+        return;
     }
     
-    async function getProductsData() {
-        const products = await $.get('/api/products');
-        return products;
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let existingItem = cart.find(item => item.name === name);
+    
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cart.push({ name, price, quantity: 1 });
     }
+    
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount();
+}
 
-    function filterProductsData() {
-        const filter = document.getElementById('filter').value;
+function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+    document.getElementById('cart-count').textContent = cartCount;
+}
 
-        // Filter products based on filter value
-        const filteredProducts = productsData.filter((product) => {
-            if(filter == 'color-mixed') {
-                return product.color == 'mixed';
-            } else if(filter == 'color-red') {
-                return product.color == 'red';
-            } else if(filter == 'color-yellow') {
-                return product.color == 'yellow';
-            } else if(filter == 'occasion-any') {
-                return product.occasion == 'any';
-            } else if(filter == 'type-arrangement') {
-                return product.type == 'arrangement';
-            } else if(filter == 'type-bouquet') {
-                return product.type == 'bouquet';
-            } else if(filter == 'type-garden') {
-                return product.type == 'garden';
-            } else {
-                return true;        
-            }
-        });
+function updateCart() {
+    const cartElement = document.getElementById('cart');
+    cartElement.textContent = `Cart: ${cart.length} items`;
+}
 
-        return filteredProducts;
-    }
+function showSlide(index) {
+    slides[currentSlide].classList.remove('active');
+    currentSlide = (index + slides.length) % slides.length;
+    slides[currentSlide].classList.add('active');
+}
 
-    function createProducts() {
-        productsSection[0].innerHTML = '';   
-        const products = filterProductsData();
-        
-        // Add products to products section
-        products.forEach((product) => {
-            const productElement = document.createElement('div');
-            productElement.id = productId;
-            productElement.className = 'product';
-            productElement.innerHTML = `
-            <img src=${product.imgSrc} alt="${product.name}" />
-            <h3>${product.name}</h3>
-            <p>₱${product.price}</p>
-            <p>Stock: ${product.stock}</p>`;
-            
-            const button = document.createElement('button');
-            if(product.stock == 0) {
-                button.disabled = true;
-                button.textContent = 'Out of Stock';
-            } else {
-                button.textContent = 'Add to Cart';
-            }
-            button.onclick = () => addToCart(product.name, product.price);
-            productElement.appendChild(button);
+function changeSlide(direction) {
+    showSlide(currentSlide + direction);
+}
 
-            productsSection[0].appendChild(productElement);
-            productId++;
-        });
-    }
+function nextSlide() {
+    changeSlide(1);
+}
 
-    function showSlide(index) {
-        slides[currentSlide].classList.remove('active');
-        currentSlide = (index + slides.length) % slides.length;
-        slides[currentSlide].classList.add('active');
-    }
-
-    function changeSlide(direction) {
-        showSlide(currentSlide + direction);
-    }
-
-    function nextSlide() {
-        changeSlide(1);
-    }
-
-    setInterval(nextSlide, 5000); // Change slide every 5 seconds
-    createProducts();
-    filter.onchange = createProducts;
-});
+setInterval(nextSlide, 5000); // Change slide every 5 seconds
+document.addEventListener('DOMContentLoaded', updateCartCount);
