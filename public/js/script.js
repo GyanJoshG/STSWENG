@@ -1,3 +1,7 @@
+let cart = [];
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slideshow img');
+
 document.addEventListener('DOMContentLoaded', async () => {
     // HTML elements
     const slides = document.querySelectorAll('.slideshow img');
