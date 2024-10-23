@@ -101,4 +101,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     setInterval(nextSlide, 5000); // Change slide every 5 seconds
     createProducts();
     filter.onchange = createProducts;
+    document.querySelector('.prev').onclick = () => changeSlide(-1);
+    document.querySelector('.next').onclick = () => changeSlide(1);
 });
