@@ -5,9 +5,10 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main" , "Sprint#2" , "Sprint#3" , "Sprint#4"]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main" , "Sprint#2" , "Sprint#3" , "Sprint#4"]
+
 
 jobs:
   build:
