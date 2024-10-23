@@ -4,11 +4,10 @@ import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
 import express from 'express';
 import dotenv from 'dotenv';
-import connectDB from './server/dbConnect.js';
+import connectDB from './server/DBConnect.js';
 import productsRouter from './server/api/products.js';
 import customersRouter from './server/api/customers.js';
 import indexRouter from './server/api/index.js';
-import helmet from 'helmet';
 
 const app = express();
 const PORT = process.env.PORT;
@@ -27,17 +26,6 @@ app.use(session({
 }));
 app.engine('.hbs', exphbs.engine({ extname: '.hbs', defaultLayout: 'main'})); 
 app.set('view engine', '.hbs');
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        "default-src": ["'self'"],
-        "script-src": ["'self'", "ajax.googleapis.com"],
-        "img-src": ["'self'", "via.placeholder.com"]
-      },
-    },
-  })
-);
 
 app.use('/', productsRouter);
 app.use('/', customersRouter);
