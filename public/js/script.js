@@ -3,31 +3,126 @@ document.addEventListener('DOMContentLoaded', async () => {
     const slides = document.querySelectorAll('.slideshow img');
     const productsSection = document.querySelectorAll('.products');
     const filter = document.getElementById('filter');
+    const cartElement = document.getElementById('cart');
 
-    let cart = [];
+    let cart = {};
     let currentSlide = 0;
     let productId = 0;
     const productsData = await getProductsData();
 
-    function addToCart(name, price) {
-        cart.push({ name, price });
-        updateCart();
+    /**
+     * Adds a product to the shopping cart.
+     * If the product already exists in the cart, it increments the quantity by 1.
+     * If the product's quantity reaches the stock limit, it displays an alert message.
+     *
+     * @param {string} name - The name of the product.
+     * @param {number} price - The price of the product.
+     * @param {number} stock - The stock quantity of the product.
+     *
+     * @returns {void}
+     */
+    function addToCart(name, price, stock) {
+        if(name in cart) {
+            if(cart[name].inCart < stock) { 
+                cart[name].inCart++;
+            } else {
+                alert('You have reached the limit for the product.');
+            }          
+        } else {
+            cart[name] = { price, inCart: 1 };
+        }
     }
 
-    function updateCart() {
-        const cartElement = document.getElementById('cart');
-        cartElement.textContent = `Cart: ${cart.length} items`;
-    }
+    /**
+     * Counts the total number of products in the cart.
+     *
+     * @function countProducts
+     * @returns {number} The total number of products in the cart.
+     *
+     * @example
+     * // Example usage:
+     * let cart = {
+     *     'Product A': { price: 100, inCart: 2 },
+     *     'Product B': { price: 200, inCart: 1 },
+     * };
+     * console.log(countProducts()); // Output: 3
+     */
+    function countProducts() {
+        let count = 0;
     
+        for(let product in cart) {
+            count += cart[product].inCart;
+        }
+    
+        return count;
+    }
+
+    /**
+     * Updates the shopping cart display with the total number of products.
+     *
+     * @function updateCart
+     * @returns {void}
+     *
+     * @example
+     * // Example usage:
+     * updateCart();
+     *
+     * // Example output:
+     * // The cartElement's textContent will be updated to display the total number of products.
+     * // For example, if the cart contains 3 items (2 of 'Product A' and 1 of 'Product B'), the cartElement's textContent will be:
+     * // "Cart: 3 items"
+     */
+    function updateCart() {
+        cartElement.textContent = `Cart: ${countProducts()} items`;
+    }
+
+    /**
+     * Retrieves product data from the server using an asynchronous HTTP GET request.
+     *
+     * @async
+     * @function getProductsData
+     * @returns {Promise<Array>} A promise that resolves to an array of product objects.
+     *
+     * @example
+     * // Example usage:
+     * getProductsData().then((products) => {
+     *     console.log(products);
+     * });
+     *
+     * // Example output:
+     * [
+     *     { id: 1, name: 'Product A', price: 100, stock: 50, imgSrc: '/path/to/image1.jpg', color: 'red', occasion: 'anniversary', type: 'bouquet' },
+     *     { id: 2, name: 'Product B', price: 200, stock: 30, imgSrc: '/path/to/image2.jpg', color: 'yellow', occasion: 'any', type: 'arrangement' },
+     *     // ... more product objects
+     * ]
+     */
     async function getProductsData() {
         const products = await $.get('/api/products');
         return products;
     }
 
+    /**
+     * Filters the product data based on the selected filter value.
+     *
+     * @function filterProductsData
+     * @returns {Array} An array of filtered product objects.
+     *
+     * @example
+     * // Example usage:
+     * const filter = document.getElementById('filter');
+     * const filteredProducts = filterProductsData();
+     * console.log(filteredProducts);
+     *
+     * // Example output:
+     * [
+     *     { id: 1, name: 'Product A', price: 100, stock: 50, imgSrc: '/path/to/image1.jpg', color: 'red', occasion: 'anniversary', type: 'bouquet' },
+     *     { id: 3, name: 'Product C', price: 150, stock: 20, imgSrc: '/path/to/image3.jpg', color: 'red', occasion: 'birthday', type: 'arrangement' },
+     *     // ... more product objects
+     * ]
+     */
     function filterProductsData() {
         const filterVal = filter.value;
 
-        // Filter products based on filter value
         const filteredProducts = productsData.filter((product) => {
             if(filterVal == 'color-mixed') {
                 return product.color == 'mixed';
@@ -51,10 +146,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         return filteredProducts;
     }
 
+    /**
+     * Creates and displays product elements in the products section based on the filtered product data.
+     *
+     * @function createProducts
+     * @returns {void}
+     *
+     * @example
+     * // Example usage:
+     * createProducts();
+     *
+     * // Example output:
+     * // The products section will be populated with product elements based on the filtered product data.
+     */
     function createProducts() {
         productsSection[0].innerHTML = '';   
         const products = filterProductsData();
-        
+
         // Add products to products section
         products.forEach((product) => {
             const productElement = document.createElement('div');
@@ -65,18 +173,21 @@ document.addEventListener('DOMContentLoaded', async () => {
             <h3>${product.name}</h3>
             <p>₱${product.price}</p>
             <p>Stock: ${product.stock}</p>`;
-            
+
             const button = document.createElement('button');
-            
+
             if(product.stock == 0) {
                 button.textContent = 'Out of Stock';
                 button.disabled = true;
                 productElement.classList.add('out-of-stock');
             } else {
                 button.textContent = 'Add to Cart';
-                button.onclick = () => addToCart(product.name, product.price);
+                button.onclick = () => {
+                    addToCart(product.name, product.price, product.stock);
+                    updateCart();
+                }
             }
-            
+
             productElement.appendChild(button);
 
             productsSection[0].appendChild(productElement);
