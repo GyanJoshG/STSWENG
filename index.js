@@ -43,6 +43,14 @@ app.use('/', productsRouter);
 app.use('/', customersRouter);
 app.use('/', indexRouter);
 
+/**
+ * Middleware function to handle 404 errors.
+ * Renders a custom error page when a requested route is not found.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {void}
+ */
 app.use((req, res) => {
   res.status(404).render('handling', { title: 'Page Not Found', body: 'Error 404. Page not found.' });
 });
