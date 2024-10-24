@@ -10,8 +10,17 @@ const controller = {
         } catch (err) {
             console.error(err);
         }
-    }
-}
+    },
+    getCart: (req, res) => {
+        const cart = req.session.cart || [];
+        
+        // Calculate total price
+        const total = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+    
+        console.log('Rendering cart:', cart); // Debugging log
+        res.render('cart', { cart, total });
+    }    
+};
 
 /*
     exports the object `controller` (defined above)

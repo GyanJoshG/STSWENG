@@ -8,6 +8,7 @@ import connectDB from './server/DBConnect.js';
 import productsRouter from './server/api/products.js';
 import customersRouter from './server/api/customers.js';
 import indexRouter from './server/api/index.js';
+import cartRouter from './server/api/cart.js'
 
 const app = express();
 const PORT = process.env.PORT;
@@ -30,7 +31,16 @@ app.set('view engine', '.hbs');
 app.use('/', productsRouter);
 app.use('/', customersRouter);
 app.use('/', indexRouter);
+app.use('/api/cart', cartRouter);
 
+/**
+ * Middleware function to handle 404 errors.
+ * Renders a custom error page when a requested route is not found.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {void}
+ */
 app.use((req, res) => {
   res.status(404).render('handling', { title: 'Page Not Found', body: 'Error 404. Page not found.' });
 });
