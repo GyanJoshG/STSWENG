@@ -14,11 +14,13 @@ router.post('/add-to-cart', (req, res) => {
         req.session.cart = {};
     }
 
-    // Check if the product is already in the session cart
+    // Ensure quantity is treated as a number
+    const itemQuantity = Number(quantity);
+
     if (name in req.session.cart) {
-        req.session.cart[name].inCart += quantity; // Update quantity
+        req.session.cart[name].inCart += itemQuantity; // Update quantity
     } else {
-        req.session.cart[name] = { price, inCart: quantity }; // Add new product
+        req.session.cart[name] = { price, inCart: itemQuantity }; // Add new product
     }
 
     console.log('Cart in session:', req.session.cart); // Debugging log

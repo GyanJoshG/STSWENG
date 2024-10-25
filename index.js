@@ -31,7 +31,7 @@ app.set('view engine', '.hbs');
 app.use('/', productsRouter);
 app.use('/', customersRouter);
 app.use('/', indexRouter);
-app.use('/api/cart', cartRouter);
+app.use('/cart', cartRouter);
 
 /**
  * Middleware function to handle 404 errors.

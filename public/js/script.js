@@ -22,21 +22,21 @@ document.addEventListener('DOMContentLoaded', async () => {
      * @returns {void}
      */
     async function addToCart(name, price, stock) {
-        console.log(`Adding to cart: ${name}, Price: ${price}, Stock: ${stock}`); // Debugging log
+        console.log(`Adding to cart: ${name}, Price: ${price}, Stock: ${stock}`); 
     
         if (name in cart) {
             if (cart[name].inCart < stock) {
                 cart[name].inCart++;
             } else {
                 alert('You have reached the limit for the product.');
+                return;
             }
         } else {
             cart[name] = { price, inCart: 1 };
         }
     
-        // Send the updated cart to the server
         try {
-            const response = await fetch('/api/cart/add-to-cart', { // Make sure this path matches your server configuration
+            const response = await fetch('/cart/add-to-cart', { 
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
