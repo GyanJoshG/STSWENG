@@ -6,7 +6,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import connectDB from './server/dbConnect.js';
 import productsRouter from './server/api/products.js';
-import customersRouter from './server/api/customers.js';
+import usersRouter from './server/api/users.js';
 import indexRouter from './server/api/index.js';
 import signupRouter from './server/api/signup.js';
 import helmet from 'helmet';
@@ -41,7 +41,7 @@ app.use(
 );
 
 app.use('/', productsRouter);
-app.use('/', customersRouter);
+app.use('/', usersRouter);
 app.use('/', indexRouter);
 app.use('/', signupRouter);
 
