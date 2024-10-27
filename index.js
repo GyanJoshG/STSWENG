@@ -8,6 +8,7 @@ import connectDB from './server/dbConnect.js';
 import productsRouter from './server/api/products.js';
 import customersRouter from './server/api/customers.js';
 import indexRouter from './server/api/index.js';
+import signupRouter from './server/api/signup.js';
 import helmet from 'helmet';
 
 const app = express();
@@ -42,6 +43,7 @@ app.use(
 app.use('/', productsRouter);
 app.use('/', customersRouter);
 app.use('/', indexRouter);
+app.use('/', signupRouter);
 
 /**
  * Middleware function to handle 404 errors.
