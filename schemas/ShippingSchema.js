@@ -17,7 +17,8 @@ const ShippingSchema = new mongoose.Schema(
         default: 'Cash on Delivery'
       }
     },
-    { versionKey: false, _id: false }
+    { versionKey: false }
   );
 
-export default ShippingSchema;
+const Shipping = mongoose.model("Shipping", ShippingSchema);
+export default mongoose.models.Shipping || Shipping ;

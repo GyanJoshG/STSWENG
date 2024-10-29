@@ -3,6 +3,9 @@
     when a client requests for `index` paths in the server
 */
 const controller = {
+    getFavicon: function (req, res) {
+        res.status(204);
+    },
     getIndex: (req, res) => {
         try {
             console.log('Requested home page');
