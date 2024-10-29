@@ -7,10 +7,10 @@ const ProductSchema = new mongoose.Schema(
       stock: { type: Number },
       sold: { type: Number },
       isAvailable: { type: Boolean },
-      type: { type: String, trim: true }, // might have to change this to enum
-      occasion: { type: String, trim: true }, // might have to change this to enum
+      type: { type: String, trim: true }, 
+      occasion: { type: String, trim: true },
       imgSrc: { type: String, trim: true }, 
-      color: { type: String, trim: true }, // might have to change this to enum
+      color: { type: String, trim: true }, 
     },
     { versionKey: false }
   );

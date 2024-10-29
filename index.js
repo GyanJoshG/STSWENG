@@ -6,7 +6,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import connectDB from './server/DBConnect.js';
 import productsRouter from './server/api/products.js';
-import customersRouter from './server/api/customers.js';
+import usersRouter from './server/api/users.js';
 import indexRouter from './server/api/index.js';
 import cartRouter from './server/api/cart.js'
 
@@ -29,7 +29,7 @@ app.engine('.hbs', exphbs.engine({ extname: '.hbs', defaultLayout: 'main'}));
 app.set('view engine', '.hbs');
 
 app.use('/', productsRouter);
-app.use('/', customersRouter);
+app.use('/', usersRouter);
 app.use('/', indexRouter);
 app.use('/cart', cartRouter);
 
