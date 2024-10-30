@@ -5,9 +5,12 @@ import mongoose from 'mongoose';
 import express from 'express';
 import dotenv from 'dotenv';
 import connectDB from './server/dbConnect.js';
-import productsRouter from './server/api/products.js';
-import customersRouter from './server/api/customers.js';
 import indexRouter from './server/api/index.js';
+import signupRouter from './server/api/signup.js';
+import productsRouter from './server/api/products.js';
+import shippingsRouter from './server/api/shippings.js';
+import usersRouter from './server/api/users.js';
+import ordersRouter from './server/api/orders.js';
 import helmet from 'helmet';
 
 const app = express();
@@ -39,9 +42,12 @@ app.use(
   })
 );
 
-app.use('/', productsRouter);
-app.use('/', customersRouter);
 app.use('/', indexRouter);
+app.use('/', signupRouter);
+app.use('/', productsRouter);
+app.use('/', shippingsRouter);
+app.use('/', usersRouter);
+app.use('/', ordersRouter);
 
 /**
  * Middleware function to handle 404 errors.
