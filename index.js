@@ -12,8 +12,6 @@ import shippingsRouter from './server/api/shippings.js';
 import usersRouter from './server/api/users.js';
 import ordersRouter from './server/api/orders.js';
 import helmet from 'helmet';
-import usersRouter from './server/api/users.js';
-import indexRouter from './server/api/index.js';
 import cartRouter from './server/api/cart.js'
 
 const app = express();
