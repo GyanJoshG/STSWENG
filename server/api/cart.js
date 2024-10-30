@@ -1,6 +1,7 @@
 import express from 'express';
 import controller from './../../controllers/controller.js';
 import Product from '../../schemas/ProductSchema.js';
+import Shipping from '../../schemas/ShippingSchema.js';
 const router = express.Router();
 
 // Go to cart page
@@ -10,21 +11,19 @@ router.get('/', controller.getCart);
 router.post('/add-to-cart', (req, res) => {
     const { name, price, quantity } = req.body;
 
-    // Initialize the cart if it doesn't exist in the session
     if (!req.session.cart) {
         req.session.cart = {};
     }
 
-    // Ensure quantity is treated as a number
     const itemQuantity = Number(quantity);
 
     if (name in req.session.cart) {
-        req.session.cart[name].inCart += itemQuantity; // Update quantity
+        req.session.cart[name].inCart += itemQuantity; 
     } else {
-        req.session.cart[name] = { price, inCart: itemQuantity }; // Add new product
+        req.session.cart[name] = { price, inCart: itemQuantity }; 
     }
 
-    console.log('Cart in session:', req.session.cart); // Debugging log
+    console.log('Cart in session:', req.session.cart); 
     res.json({ message: 'Product added to cart', cart: req.session.cart });
 });
 
@@ -32,7 +31,6 @@ router.post('/add-to-cart', (req, res) => {
 router.post('/update-quantity', async (req, res) => {
     const { name, change } = req.body;
 
-    // Initialize the cart if it doesn't exist
     if (!req.session.cart || !req.session.cart[name]) {
         return res.json({ success: false, message: 'Item not found in cart' });
     }
@@ -41,7 +39,6 @@ router.post('/update-quantity', async (req, res) => {
     const newQuantity = itemInCart.inCart + change;
 
     try {
-        // Fetch the product from the database to get its stock
         const product = await Product.findOne({ name });
 
         if (!product) {
@@ -50,7 +47,6 @@ router.post('/update-quantity', async (req, res) => {
 
         const stock = product.stock;
 
-        // Check stock limits
         if (newQuantity < 0) {
             return res.json({ success: false, message: 'Quantity cannot be less than 0' });
         }
@@ -59,17 +55,48 @@ router.post('/update-quantity', async (req, res) => {
             return res.json({ success: false, message: 'Insufficient stock available' });
         }
 
-        // Update the quantity in the cart or remove the item if quantity is 0
         if (newQuantity === 0) {
-            delete req.session.cart[name]; // Remove the item from the cart
+            delete req.session.cart[name]; 
         } else {
-            itemInCart.inCart = newQuantity; // Update the quantity in the cart
+            itemInCart.inCart = newQuantity; 
         }
 
         res.json({ success: true, cart: req.session.cart });
     } catch (error) {
         console.error('Error fetching product:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+});
+
+router.post('/checkout', async (req, res) => {
+
+    try {
+        const shippingData = req.body;
+        
+        const cartItems = Object.entries(req.session.cart);
+    
+
+        for (let [name, item] of cartItems) {
+            await Product.updateOne(
+                { name },
+                {
+                    $inc: { 
+                        stock: -item.inCart,        
+                        sold: item.inCart          
+                    }
+                }
+            );
+        }
+
+        const newShipping = new Shipping(shippingData);
+        await newShipping.save();
+
+        req.session.cart = {};
+        
+        res.status(201).json({ message: 'Checkout successful!' });
+    } catch (error) {
+        console.error('Error during checkout:', error);
+        res.status(500).json({ message: 'Error during checkout' });
     }
 });
 

@@ -5,7 +5,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function closeModal() {
+        resetModal();
         document.getElementById('checkout-modal').style.display = 'none';
+    }
+
+    function resetModal() {
+        document.getElementById('qr-code').style.display = 'none';
+        document.getElementById('confirmation-message').style.display = 'none';
+        
+        document.getElementById('shipping-form').reset();
     }
 
     document.querySelector('.close-btn').onclick = closeModal;
@@ -21,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    document.getElementById('confirm-btn').onclick = function() {
+    document.getElementById('proceed-btn').onclick = function() {
         const shippingData = {
             firstName: document.getElementById('firstName').value,
             lastName: document.getElementById('lastName').value,
@@ -34,8 +42,42 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             preferredPaymentMethod: document.getElementById('paymentMethod').value,
         };
-
+    
         console.log("Shipping Data:", shippingData);
+    
+        if (shippingData.preferredPaymentMethod === 'Gcash') {
+            document.getElementById('qr-code').style.display = 'block';
+            document.getElementById('confirmation-message').style.display = 'none';
+        } else if (shippingData.preferredPaymentMethod === 'Cash on Delivery') {
+            document.getElementById('confirmation-message').style.display = 'block';
+            document.getElementById('qr-code').style.display = 'none';
+        }
+    
+        window.shippingData = shippingData;
+    };
+
+    document.getElementById('confirm-btn').onclick = async function() {
+        if (!window.shippingData) {
+            console.error('Shipping data not set. Please proceed first.');
+            return;
+        }
+    
+        try {
+            const response = await fetch('/cart/checkout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(window.shippingData),
+            });
+    
+            const result = await response.json();
+            console.log(result.message);
+    
+        } catch (error) {
+            console.error('Error submitting shipping data:', error);
+        }
+    
         closeModal();
     };
 });

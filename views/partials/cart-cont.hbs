@@ -62,8 +62,23 @@
                 <option value="Gcash">Gcash</option>
                 <option value="Cash on Delivery">Cash on Delivery</option>
             </select>
-            <p>Please confirm your order.</p>
-            <button id="confirm-btn">Confirm</button>
+            <p></p>
+            <button id="proceed-btn">Proceed</button>
+
+            <!-- Placeholder for QR Code -->
+            <div id="qr-code" style="display:none; margin-top: 20px;">
+                <h3>Scan this QR code for payment:</h3>
+                <img src="https://via.placeholder.com/150" alt="QR Code" />
+                <p>Please pay the appropriate amount before confirming.</p>
+                <button id="confirm-btn">Confirm</button>
+            </div>
+
+            <!-- Placeholder for confirmation message -->
+            <div id="confirmation-message" style="display:none; margin-top: 20px;">
+                <h3>Thank you for your order!</h3>
+                <p>Your order will be delivered soon. Please prepare the cash for delivery.</p>
+                <button id="confirm-btn">Confirm</button>
+            </div>
         </div>
     </div>
     

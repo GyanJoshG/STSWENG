@@ -1,7 +1,7 @@
-import ShippingSchema from '../schemas/ShippingSchema.js';
+import ShippingSchema from './../schemas/ShippingSchema.js';
 
 const shippingController = {
-    getShippings: async (req, res) => {
+    getShipping: async (req, res) => {
         try {
             const shippings = await ShippingSchema.find();
             console.log(shippings);
