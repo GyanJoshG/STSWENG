@@ -1,0 +1,86 @@
+<nav class="navbar">
+    <img src="https://via.placeholder.com/200x50?text=Logo+Here" alt="Logo">
+    <a href="/">Home</a>
+    <a href="#products">Products</a>
+    <a href="#about-contact">About & Contact</a>
+</nav>
+
+<div class="container">
+    <h1>Your Cart</h1>
+    <div id="cart-content">
+        {{#each cart}}
+            <div class="cart-item" id="cart-item-{{this.name}}">
+                <h3>{{this.name}}</h3>
+                <p>Price: ₱{{this.price}}</p>
+                <p>
+                    <button class="quantity-btn" onclick="updateQuantity('{{this.name}}', -1)">-</button>
+                    <span id="quantity-{{this.name}}">{{this.quantity}}</span>
+                    <button class="quantity-btn" onclick="updateQuantity('{{this.name}}', 1)">+</button>
+                </p>
+            </div>
+        {{else}}
+            <p>Your cart is empty.</p> 
+        {{/each}}
+    </div>
+    <div id="cart-total">
+        <h2>Total: ₱<span id="total-amount">{{total}}</span></h2>
+    </div>
+    <button id="checkout-btn" class="btn">Proceed to Checkout</button>
+
+    <!-- Modal for Checkout -->
+    <div id="checkout-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2>Checkout</h2>
+            <form id="shipping-form"></form>
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName" required>
+
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName" required>
+
+            <label for="phoneNumber">Phone Number:</label>
+            <input type="text" id="phoneNumber" name="phoneNumber" required>
+
+            <fieldset>
+                <legend>Address:</legend>
+                <label for="street">Street:</label>
+                <input type="text" id="street" name="street" required>
+
+                <label for="city">City:</label>
+                <input type="text" id="city" name="city" required>
+
+                <label for="state">State:</label>
+                <input type="text" id="state" name="state" required>
+
+                <label for="zipCode">Zip Code:</label>
+                <input type="text" id="zipCode" name="zipCode" required>
+            </fieldset>
+
+            <label for="paymentMethod">Preferred Payment Method:</label>
+            <select id="paymentMethod" name="paymentMethod">
+                <option value="Gcash">Gcash</option>
+                <option value="Cash on Delivery">Cash on Delivery</option>
+            </select>
+            <p></p>
+            <button id="proceed-btn">Proceed</button>
+
+            <!-- Placeholder for QR Code -->
+            <div id="qr-code" style="display:none; margin-top: 20px;">
+                <h3>Scan this QR code for payment:</h3>
+                <img src="https://via.placeholder.com/150" alt="QR Code" />
+                <p>Please pay the appropriate amount before confirming.</p>
+                <button id="confirm-btn">Confirm</button>
+            </div>
+
+            <!-- Placeholder for confirmation message -->
+            <div id="confirmation-message" style="display:none; margin-top: 20px;">
+                <h3>Thank you for your order!</h3>
+                <p>Your order will be delivered soon. Please prepare the cash for delivery.</p>
+                <button id="confirm-btn">Confirm</button>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
