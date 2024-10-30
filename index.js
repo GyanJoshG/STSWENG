@@ -5,7 +5,13 @@ import mongoose from 'mongoose';
 import express from 'express';
 import dotenv from 'dotenv';
 import connectDB from './server/DBConnect.js';
+import indexRouter from './server/api/index.js';
+import signupRouter from './server/api/signup.js';
 import productsRouter from './server/api/products.js';
+import shippingsRouter from './server/api/shippings.js';
+import usersRouter from './server/api/users.js';
+import ordersRouter from './server/api/orders.js';
+import helmet from 'helmet';
 import usersRouter from './server/api/users.js';
 import indexRouter from './server/api/index.js';
 import cartRouter from './server/api/cart.js'
@@ -28,7 +34,12 @@ app.use(session({
 app.engine('.hbs', exphbs.engine({ extname: '.hbs', defaultLayout: 'main'})); 
 app.set('view engine', '.hbs');
 
+app.use('/', indexRouter);
+app.use('/', signupRouter);
 app.use('/', productsRouter);
+app.use('/', shippingsRouter);
+app.use('/', usersRouter);
+app.use('/', ordersRouter);
 app.use('/', usersRouter);
 app.use('/', indexRouter);
 app.use('/cart', cartRouter);

@@ -1,4 +1,4 @@
-import UserSchema from '../schemas/UserSchema.js';
+import UserSchema from './../schemas/UserSchema.js';
 
 const usersController = {
     getUsers: async (req, res) => {
