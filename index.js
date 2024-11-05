@@ -1,17 +1,20 @@
+// Dependencies
 import session from 'express-session';
 import exphbs from 'express-handlebars';
-import bcrypt from 'bcrypt';
-import mongoose from 'mongoose';
 import express from 'express';
 import dotenv from 'dotenv';
+import helmet from 'helmet';
+
+// Database connection
 import connectDB from './server/dbConnect.js';
+
+// Routers
 import indexRouter from './server/api/index.js';
 import signupRouter from './server/api/signup.js';
 import productsRouter from './server/api/products.js';
 import shippingsRouter from './server/api/shippings.js';
 import usersRouter from './server/api/users.js';
 import ordersRouter from './server/api/orders.js';
-import helmet from 'helmet';
 
 const app = express();
 const PORT = process.env.PORT;
