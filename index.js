@@ -1,10 +1,8 @@
+// Dependencies
 import session from 'express-session';
 import exphbs from 'express-handlebars';
-import bcrypt from 'bcrypt';
-import mongoose from 'mongoose';
 import express from 'express';
 import dotenv from 'dotenv';
-import connectDB from './server/DBConnect.js';
 import indexRouter from './server/api/index.js';
 import signupRouter from './server/api/signup.js';
 import productsRouter from './server/api/products.js';
