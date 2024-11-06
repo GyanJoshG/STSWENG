@@ -35,12 +35,11 @@ const usersController = {
             res.status(500).json({ error: err.message });
         }
     },
-    
     createUser: async (req, res) => {
         const { username, email, password, confirmPassword } = req.body;
 
         // Input validation
-        if(!username || !password || !password || !confirmPassword) {
+        if(!username || !email || !password || !confirmPassword) {  
             return res.status(400).json({ error: 'There is an empty field.' });
         }
 

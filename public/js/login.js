@@ -1,14 +1,20 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const loginForm = document.getElementById('login-form');
+import utils from './utils.js';
 
-    loginForm.addEventListener('submit', function(event) {
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('login-form');
+
+    form.addEventListener('submit', function(event) {
         event.preventDefault();
 
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
+        const formData = new FormData(event.target); // event.target is #login-form
+        const email = formData.get('email');
+        const password = formData.get('password');
 
-        console.log('Login attempt:', { username, password });
+        if(email.length > 254) {
+            utils.inform(true, 'Error signing up: Email should not exceed 254 characters');
+            return;
+        }
 
-        loginForm.reset();
+        // TODO: Finish login script
     });
 });
