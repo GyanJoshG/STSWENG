@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 import helmet from 'helmet';
 
 // Database connection
-import connectDB from './server/dbConnect.js';
+import connectDB from './server/DbConnect.js';
 
 // Routers
 import indexRouter from './server/api/index.js';
