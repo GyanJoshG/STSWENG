@@ -4,17 +4,26 @@
 */
 const controller = {
     getFavicon: function (req, res) {
+        console.log('getFavicon() called');
+
         res.status(204);
     },
     getIndex: (req, res) => {
+        console.log('getIndex() called');
+
         try {
-            console.log('Requested home page');
-            res.status(200).render('index');
+            if(req.session.user) {
+                res.status(200).render('index', { isLogin: false });
+            } else {
+                res.status(200).render('index', { isLogin: true });
+            }
         } catch (err) {
             console.error(err);
         }
     },
     getSignUp: (req, res) => {
+        console.log('getSignUp() called');
+
         try {
             console.log('Requested sign up page');
             res.status(200).render('signup');
@@ -23,9 +32,11 @@ const controller = {
         }
     },
     getCart: (req, res) => {
+        console.log('getCart() called');
+
         const cart = req.session.cart || {}; // Default to an empty object if no cart exists
         
-        console.log('Cart in session:', cart);
+        console.log('Cart in session: ', cart);
         
         // Check if cart is an object
         if (typeof cart !== 'object' || Array.isArray(cart)) {
