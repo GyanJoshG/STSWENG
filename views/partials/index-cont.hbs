@@ -2,6 +2,12 @@
     <img src = "https://via.placeholder.com/200x50?text=Logo+Here" alt="Logo">
     <a href="#products">Products</a>
     <a href="#about-contact">About & Contact</a>
+    <a id="log" 
+    {{#if isLogin}}
+    href="login">Login</a>
+    {{else}}
+    href="#">Logout</a>
+    {{/if}}
     <div class="nav-icons">
         <a href="/cart" class="icon-link">
             <i class="fa-solid fa-cart-shopping"></i>

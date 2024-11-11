@@ -2,6 +2,8 @@ import OrderSchema from './../schemas/OrderSchema.js';
 
 const ordersController = {
     getOrders: async (req, res) => {
+        console.log('getOrders() called');
+        
         try {
             const orders = await OrderSchema.find().populate('shipping');
             console.log(orders);

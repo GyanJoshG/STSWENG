@@ -2,6 +2,8 @@ import ProductSchema from './../schemas/ProductSchema.js';
 
 const productsController = {
     getProducts: async (req, res) => {
+        console.log('getProducts() called');
+        
         try {
             const products = await ProductSchema.find();
             console.log(products);
