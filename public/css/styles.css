@@ -377,3 +377,9 @@ label[for="paymentMethod"] {
 #log:hover {
     cursor: pointer;
 }
+
+#cartSpan {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
