@@ -28,12 +28,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.use(session({
-  secret: 'secretkey',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {secure: false}
+	secret: 'secretkey',
+	resave: false,
+	saveUninitialized: false,
+	cookie: { secure: false }
 }));
-app.engine('.hbs', exphbs.engine({ extname: '.hbs', defaultLayout: 'main'})); 
+app.engine('.hbs', exphbs.engine({ extname: '.hbs', defaultLayout: 'main' }));
 app.set('view engine', '.hbs');
 // app.use(
 //   helmet({
@@ -67,9 +67,14 @@ app.use('/', loginRouter);
  * @returns {void}
  */
 app.use((req, res) => {
-  res.status(404).render('handling', { title: 'Page Not Found', body: 'Error 404. Page not found.' });
+	if(req.body.stat && req.body.title && req.body.title) {
+		const { stat, title, body } = req.body;
+		res.status(stat).render('handling', { title, body });
+	} else {
+		res.status(404).render('handling', { title: 'Page Not Found', body: 'Error 404. Page not found.' });
+	}
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+	console.log(`Server running at http://localhost:${PORT}`);
 });
