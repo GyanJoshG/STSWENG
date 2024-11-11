@@ -1,14 +1,35 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const loginForm = document.getElementById('login-form');
+import utils from './utils.js';
 
-    loginForm.addEventListener('submit', function(event) {
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('login-form');
+
+    form.addEventListener('submit', function(event) {
         event.preventDefault();
 
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
+        const formData = new FormData(event.target); // event.target is #login-form
+        const username = formData.get('username');
+        const password = formData.get('password');
 
-        console.log('Login attempt:', { username, password });
+        // Send POST request to /api/login
+        fetch(form.action, // URI
+            {
+                method: form.method, // POST request
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password }),
+            }
+        ).then(async (res) => {
+            const result = await res.json();
 
-        loginForm.reset();
+            if(res.ok) {
+                utils.inform(false, result.message);
+                event.target.reset();
+                window.location.href = '/';
+            } else {
+                utils.inform(true, `Error logging in: ${result.error}`);
+            }
+        })
+        .catch((err) => { // Catch POST request errors
+            utils.inform(true, `Submission failed: ${err}`);
+        });
     });
 });

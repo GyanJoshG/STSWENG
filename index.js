@@ -3,13 +3,19 @@ import session from 'express-session';
 import exphbs from 'express-handlebars';
 import express from 'express';
 import dotenv from 'dotenv';
+import helmet from 'helmet';
+
+// Database connection
+import connectDB from './server/DbConnect.js';
+
+// Routers
 import indexRouter from './server/api/index.js';
 import signupRouter from './server/api/signup.js';
 import productsRouter from './server/api/products.js';
 import shippingRouter from './server/api/shipping.js';
 import usersRouter from './server/api/users.js';
 import ordersRouter from './server/api/orders.js';
-import helmet from 'helmet';
+import loginRouter from './server/api/login.js';
 import cartRouter from './server/api/cart.js'
 
 const app = express();
@@ -29,6 +35,17 @@ app.use(session({
 }));
 app.engine('.hbs', exphbs.engine({ extname: '.hbs', defaultLayout: 'main'})); 
 app.set('view engine', '.hbs');
+// app.use(
+//   helmet({
+//     contentSecurityPolicy: {
+//       directives: {
+//         "default-src": ["'self'"],
+//         "script-src": ["'self'", "ajax.googleapis.com"],
+//         "img-src": ["'self'", "via.placeholder.com"]
+//       },
+//     },
+//   })
+// );
 
 app.use('/', indexRouter);
 app.use('/', signupRouter);
@@ -39,6 +56,7 @@ app.use('/', ordersRouter);
 app.use('/', usersRouter);
 app.use('/', indexRouter);
 app.use('/cart', cartRouter);
+app.use('/', loginRouter);
 
 /**
  * Middleware function to handle 404 errors.

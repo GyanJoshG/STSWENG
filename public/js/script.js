@@ -1,14 +1,17 @@
+import utils from './utils.js';
+
 document.addEventListener('DOMContentLoaded', async () => {
     // HTML elements
     const slides = document.querySelectorAll('.slideshow img');
     const productsSection = document.querySelectorAll('.products');
     const filter = document.getElementById('filter');
     const cartElement = document.getElementById('cart');
+    const logout = document.getElementById('logout');
 
     let cart = {};
     let currentSlide = 0;
     let productId = 0;
-    const productsData = await getProductsData();
+    let productsData = await getProductsData();
 
     /**
      * Adds a product to the shopping cart.
@@ -153,7 +156,9 @@ document.addEventListener('DOMContentLoaded', async () => {
      */
     async function getProductsData() {
         const products = await $.get('/api/products');
-        return products;
+        console.log('Retrieved data for products: ', products);
+
+        return products.data;
     }
 
     /**
@@ -270,4 +275,32 @@ document.addEventListener('DOMContentLoaded', async () => {
     filter.onchange = createProducts;
     document.querySelector('.prev').onclick = () => changeSlide(-1);
     document.querySelector('.next').onclick = () => changeSlide(1);
+
+    log.onclick = (event) => {
+        if(log.innerText === 'Logout') {
+            event.preventDefault();
+            const userConfirmed = confirm('Are you sure you want to log out?');
+
+            if(userConfirmed) {
+                fetch('/api/logout', // URI
+                    {
+                        method: 'post', // POST request
+                        headers: { 'Content-Type': 'application/json' }
+                    }
+                ).then(async (res) => {
+                    const result = await res.json();
+        
+                    if(res.ok) {
+                        utils.inform(false, result.message);
+                        window.location.href = '/login';
+                    } else {
+                        utils.inform(true, `Error logging out: ${result.error}`);
+                    }
+                })
+                .catch((err) => { // Catch POST request errors
+                    utils.inform(true, `Unexpected error occured: ${err}`);
+                }); 
+            }
+        }
+    }
 });

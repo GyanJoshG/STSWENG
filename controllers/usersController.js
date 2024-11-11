@@ -3,44 +3,38 @@ import bcrypt from 'bcrypt';
 
 const usersController = {
     getUsers: async (req, res) => {
+        console.log('getUsers() called')
+
         try {
             const users = await User.find();
-            console.log(users);
+            console.log('users: ', users);
             res.status(200).json({ data: users });
         } catch (err) {
             console.error(err);
             res.status(500).json({ error: err.message });
         }
     },
-    checkUserExists: async (req, res) => {
-        let usernameExists = false;
-        let emailExists = false;
+    getUserByUsername: async (req, res) => {
+        console.log('getUserByUsername() called');
+
+        const { username } = req.body;
 
         try {
-            const { username, email } = req.body;
-            
-            let user = await User.findOne({ username });
-            if(user) {
-                usernameExists = true;
-            }
-
-            user = await User.findOne({ email });
-            if(user) {
-                emailExists = true;
-            }
-
-            res.status(200).json({ data: { usernameExists, emailExists } });
-        } catch(err) {
+            const user = await User.findOne({ username });
+            console.log('user: ', user);
+            res.status(200).json({ data: user });
+        } catch (err) {
             console.error(err);
             res.status(500).json({ error: err.message });
         }
     },
-    
     createUser: async (req, res) => {
+        console.log('createUser() called');
+
         const { username, email, password, confirmPassword } = req.body;
 
         // Input validation
-        if(!username || !password || !password || !confirmPassword) {
+        if(!username || !email || !password || !confirmPassword) {  
             return res.status(400).json({ error: 'There is an empty field.' });
         }
 
@@ -88,7 +82,6 @@ const usersController = {
             await user.save();
             
             res.status(200).json({ message: 'Registration successful!' });
-        
         } catch(err) {
             console.error(err);
             res.status(500).json({ error: err.message });

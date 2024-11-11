@@ -373,3 +373,7 @@ select:focus {
 label[for="paymentMethod"] {
     padding-top: 10px;
 }
+
+#log:hover {
+    cursor: pointer;
+}
