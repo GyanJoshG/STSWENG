@@ -1,14 +1,22 @@
+// Dependencies
 import session from 'express-session';
 import exphbs from 'express-handlebars';
-import bcrypt from 'bcrypt';
-import mongoose from 'mongoose';
 import express from 'express';
 import dotenv from 'dotenv';
-import connectDB from './server/dbConnect.js';
-import productsRouter from './server/api/products.js';
-import customersRouter from './server/api/customers.js';
-import indexRouter from './server/api/index.js';
 import helmet from 'helmet';
+
+// Database connection
+import connectDB from './server/DbConnect.js';
+
+// Routers
+import indexRouter from './server/api/index.js';
+import signupRouter from './server/api/signup.js';
+import productsRouter from './server/api/products.js';
+import shippingRouter from './server/api/shipping.js';
+import usersRouter from './server/api/users.js';
+import ordersRouter from './server/api/orders.js';
+import loginRouter from './server/api/login.js';
+import cartRouter from './server/api/cart.js'
 
 const app = express();
 const PORT = process.env.PORT;
@@ -20,28 +28,35 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.use(session({
-  secret: 'secretkey',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {secure: false}
+	secret: 'secretkey',
+	resave: false,
+	saveUninitialized: false,
+	cookie: { secure: false }
 }));
-app.engine('.hbs', exphbs.engine({ extname: '.hbs', defaultLayout: 'main'})); 
+app.engine('.hbs', exphbs.engine({ extname: '.hbs', defaultLayout: 'main' }));
 app.set('view engine', '.hbs');
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        "default-src": ["'self'"],
-        "script-src": ["'self'", "ajax.googleapis.com"],
-        "img-src": ["'self'", "via.placeholder.com"]
-      },
-    },
-  })
-);
+// app.use(
+//   helmet({
+//     contentSecurityPolicy: {
+//       directives: {
+//         "default-src": ["'self'"],
+//         "script-src": ["'self'", "ajax.googleapis.com"],
+//         "img-src": ["'self'", "via.placeholder.com"]
+//       },
+//     },
+//   })
+// );
 
-app.use('/', productsRouter);
-app.use('/', customersRouter);
 app.use('/', indexRouter);
+app.use('/', signupRouter);
+app.use('/', productsRouter);
+app.use('/', shippingRouter);
+app.use('/', usersRouter);
+app.use('/', ordersRouter);
+app.use('/', usersRouter);
+app.use('/', indexRouter);
+app.use('/cart', cartRouter);
+app.use('/', loginRouter);
 
 /**
  * Middleware function to handle 404 errors.
@@ -52,9 +67,14 @@ app.use('/', indexRouter);
  * @returns {void}
  */
 app.use((req, res) => {
-  res.status(404).render('handling', { title: 'Page Not Found', body: 'Error 404. Page not found.' });
+	if(req.body.stat && req.body.title && req.body.title) {
+		const { stat, title, body } = req.body;
+		res.status(stat).render('handling', { title, body });
+	} else {
+		res.status(404).render('handling', { title: 'Page Not Found', body: 'Error 404. Page not found.' });
+	}
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+	console.log(`Server running at http://localhost:${PORT}`);
 });

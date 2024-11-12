@@ -1,14 +1,17 @@
+import utils from './utils.js';
+
 document.addEventListener('DOMContentLoaded', async () => {
     // HTML elements
     const slides = document.querySelectorAll('.slideshow img');
     const productsSection = document.querySelectorAll('.products');
     const filter = document.getElementById('filter');
     const cartElement = document.getElementById('cart');
+    const logout = document.getElementById('logout');
 
     let cart = {};
     let currentSlide = 0;
     let productId = 0;
-    const productsData = await getProductsData();
+    let productsData = await getProductsData();
 
     /**
      * Adds a product to the shopping cart.
@@ -21,15 +24,37 @@ document.addEventListener('DOMContentLoaded', async () => {
      *
      * @returns {void}
      */
-    function addToCart(name, price, stock) {
-        if(name in cart) {
-            if(cart[name].inCart < stock) { 
+    async function addToCart(name, price, stock) {
+        console.log(`Adding to cart: ${name}, Price: ${price}, Stock: ${stock}`); 
+    
+        if (name in cart) {
+            if (cart[name].inCart < stock) {
                 cart[name].inCart++;
             } else {
                 alert('You have reached the limit for the product.');
-            }          
+                return;
+            }
         } else {
             cart[name] = { price, inCart: 1 };
+        }
+    
+        try {
+            const response = await fetch('/cart/add-to-cart', { 
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name, price, quantity: cart[name].inCart }),
+            });
+    
+            if (response.ok) {
+                updateCart();
+                console.log('Current cart state:', cart);
+            } else {
+                console.error('Failed to add to cart:', response.status, response.statusText);
+            }
+        } catch (error) {
+            console.error('Fetch error:', error);
         }
     }
 
@@ -53,7 +78,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         for(let product in cart) {
             count += cart[product].inCart;
         }
-    
+        
+        console.log('Total products in cart:', count);
         return count;
     }
 
@@ -74,6 +100,38 @@ document.addEventListener('DOMContentLoaded', async () => {
      */
     function updateCart() {
         cartElement.textContent = `Cart: ${countProducts()} items`;
+    }
+
+        /**
+     * Updates the quantity of a specified item in the shopping cart.
+     * Sends a request to the server to change the quantity based on the
+     * provided change value (increment or decrement).
+     *
+     * @param {string} itemName - The name of the item to update in the cart.
+     * @param {number} change - The amount to change the item's quantity by.
+     *                           Can be positive (to increase) or negative (to decrease).
+     *
+     * @returns {void} - Sends a request to the server and reloads the page upon success.
+     */
+    window.updateQuantity = async function(itemName, change) {
+        try {
+            const response = await fetch('/cart/update-quantity', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: itemName, change: change })
+            });
+                
+            const data = await response.json();
+            if (data.success) {
+                location.reload(); 
+            } else {
+                console.error('Failed to update quantity');
+            }
+        } catch (error) {
+        console.error('Error updating quantity:', error);
+        }
     }
 
     /**
@@ -98,7 +156,9 @@ document.addEventListener('DOMContentLoaded', async () => {
      */
     async function getProductsData() {
         const products = await $.get('/api/products');
-        return products;
+        console.log('Retrieved data for products: ', products);
+
+        return products.data;
     }
 
     /**
@@ -183,6 +243,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             } else {
                 button.textContent = 'Add to Cart';
                 button.onclick = () => {
+                    console.log(`Button clicked for product: ${product.name}`);
                     addToCart(product.name, product.price, product.stock);
                     updateCart();
                 }
@@ -214,4 +275,32 @@ document.addEventListener('DOMContentLoaded', async () => {
     filter.onchange = createProducts;
     document.querySelector('.prev').onclick = () => changeSlide(-1);
     document.querySelector('.next').onclick = () => changeSlide(1);
+
+    log.onclick = (event) => {
+        if(log.innerText === 'Logout') {
+            event.preventDefault();
+            const userConfirmed = confirm('Are you sure you want to log out?');
+
+            if(userConfirmed) {
+                fetch('/api/logout', // URI
+                    {
+                        method: 'post', // POST request
+                        headers: { 'Content-Type': 'application/json' }
+                    }
+                ).then(async (res) => {
+                    const result = await res.json();
+        
+                    if(res.ok) {
+                        utils.inform(false, result.message);
+                        window.location.href = '/login';
+                    } else {
+                        utils.inform(true, `Error logging out: ${result.error}`);
+                    }
+                })
+                .catch((err) => { // Catch POST request errors
+                    utils.inform(true, `Unexpected error occured: ${err}`);
+                }); 
+            }
+        }
+    }
 });
