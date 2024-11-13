@@ -17,6 +17,7 @@ import usersRouter from './server/api/users.js';
 import ordersRouter from './server/api/orders.js';
 import loginRouter from './server/api/login.js';
 import cartRouter from './server/api/cart.js'
+import adminRouter from './server/api/admin.js'
 
 const app = express();
 const PORT = process.env.PORT;
@@ -57,6 +58,7 @@ app.use('/', usersRouter);
 app.use('/', indexRouter);
 app.use('/', cartRouter);
 app.use('/', loginRouter);
+app.use('/', adminRouter);
 
 /**
  * Middleware function to handle 404 errors.

@@ -18,13 +18,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     const isAdmin = localStorage.getItem('isAdmin') === 'true';
     console.log('isAdmin:', isAdmin); 
 
-    if (isAdmin) {
+    if (isAdmin && !navLinks.querySelector('a[href="/admin"]')) {
         const adminLink = document.createElement('a');
         adminLink.href = '/admin';
         adminLink.textContent = 'Admin';
         navLinks.appendChild(adminLink);
     }
-    
+
     let cart = {};
     let currentSlide = 0;
     let productId = 0;
