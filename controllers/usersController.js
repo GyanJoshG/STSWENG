@@ -77,8 +77,10 @@ const usersController = {
                 return res.status(400).json({ error: 'Email already exists. Use a different email.' });
             }
 
+            let isAdminFlag = false;
+
             const hashedpw = await bcrypt.hash(password, 13);
-            user = new User({ username, email, password: hashedpw });
+            user = new User({ username, email, password: hashedpw, isAdmin: isAdminFlag });
             await user.save();
             
             res.status(200).json({ message: 'Registration successful!' });
