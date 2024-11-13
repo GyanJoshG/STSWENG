@@ -55,7 +55,7 @@ app.use('/', usersRouter);
 app.use('/', ordersRouter);
 app.use('/', usersRouter);
 app.use('/', indexRouter);
-app.use('/cart', cartRouter);
+app.use('/', cartRouter);
 app.use('/', loginRouter);
 
 /**
