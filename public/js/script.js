@@ -8,6 +8,23 @@ document.addEventListener('DOMContentLoaded', async () => {
     const cartElement = document.getElementById('cart');
     const logout = document.getElementById('logout');
 
+    const navLinks = document.getElementById('navbar');
+    if (!navLinks) {
+        console.error('Element with class "navbar" not found.');
+        return; // Exit the function if `navLinks` is not found
+    }
+
+    // Check if `isAdmin` is correctly read from localStorage
+    const isAdmin = localStorage.getItem('isAdmin') === 'true';
+    console.log('isAdmin:', isAdmin); 
+
+    if (isAdmin) {
+        const adminLink = document.createElement('a');
+        adminLink.href = '/admin';
+        adminLink.textContent = 'Admin';
+        navLinks.appendChild(adminLink);
+    }
+    
     let cart = {};
     let currentSlide = 0;
     let productId = 0;

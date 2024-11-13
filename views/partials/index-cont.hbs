@@ -1,14 +1,16 @@
 <nav class="navbar">
     <img src = "https://via.placeholder.com/200x50?text=Logo+Here" alt="Logo">
-    <a href="#products">Products</a>
-    <a href="#about-contact">About & Contact</a>
-    <a id="log" 
-    {{#if isLogin}}
-    href="login">Login</a>
-    {{else}}
-    href="#">Logout</a>
-    {{/if}}
-    <div class="nav-icons">
+    <div id="navbar" class="nav-links"> 
+        <a href="#products">Products</a>
+        <a href="#about-contact">About & Contact</a>
+        <a id="log" 
+        {{#if isLogin}}
+        href="login">Login</a>
+        {{else}}
+        href="#">Logout</a>
+        {{/if}}
+    </div>
+    <div class="nav-icons"></div>
         <a href="/cart" class="icon-link">
             <span id="cartSpan">
                 <i class="fa-solid fa-cart-shopping"></i>

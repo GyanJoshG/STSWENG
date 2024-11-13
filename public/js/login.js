@@ -24,6 +24,10 @@ document.addEventListener('DOMContentLoaded', function() {
             if(res.ok) {
                 utils.inform(false, result.message);
                 event.target.reset();
+
+                // Store the isAdmin flag in localStorage (or sessionStorage)
+                localStorage.setItem('isAdmin', result.isAdmin);
+
                 window.location.href = '/';
             } else {
                 utils.inform(true, `Error logging in: ${result.error}`);
