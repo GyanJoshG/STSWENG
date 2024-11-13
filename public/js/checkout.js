@@ -32,8 +32,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('shipping-form').reset();
     }
 
-    document.querySelector('.close-btn').onclick = closeModal;
-
     document.getElementById('checkout-btn').onclick = function() {
         openModal();
     }

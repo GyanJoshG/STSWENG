@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const cartElement = document.getElementById('cart');
     const logout = document.getElementById('logout');
 
+
     const navLinks = document.getElementById('navbar');
     if (!navLinks) {
         console.error('Element with class "navbar" not found.');
@@ -56,7 +57,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     
         try {
-            const response = await fetch('/cart/add-to-cart', { 
+            const response = await fetch('/add-to-cart', { 
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -132,7 +133,7 @@ document.addEventListener('DOMContentLoaded', async () => {
      */
     window.updateQuantity = async function(itemName, change) {
         try {
-            const response = await fetch('/cart/update-quantity', {
+            const response = await fetch('/update-quantity', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -320,4 +321,5 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
     }
+    
 });

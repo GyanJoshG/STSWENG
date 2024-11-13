@@ -1,6 +1,6 @@
 <nav class="navbar">
     <img src="https://via.placeholder.com/200x50?text=Logo+Here" alt="Logo">
-    <div id="navbar" class="nav-links"> 
+    <div id="navbar" class="nav-links">
         <a href="/">Home</a>
         <a href="#products">Products</a>
         <a href="#about-contact">About & Contact</a>
@@ -29,8 +29,21 @@
                         <td>{{this.sold}}</td>
                         <td>{{#if this.isAvailable}}Yes{{else}}No{{/if}}</td>
                         <td>
-                            <button id="edit-btn" class="edit-btn">Edit</button>
-                            <button id="delete-btn" class="delete-btn">Delete</button>
+                            <!-- Edit Button with data-* attributes -->
+                            <button class="edit-btn" 
+                                data-id="{{this._id}}"
+                                data-name="{{this.name}}"
+                                data-price="{{this.price}}"
+                                data-stock="{{this.stock}}"
+                                data-sold="{{this.sold}}"
+                                data-isavailable="{{this.isAvailable}}"
+                                data-type="{{this.type}}"
+                                data-occasion="{{this.occasion}}"
+                                data-imgsrc="{{this.imgSrc}}"
+                                data-color="{{this.color}}">
+                                Edit
+                            </button>
+                            <button class="delete-btn">Delete</button>
                         </td>
                     </tr>
                     {{/each}}
@@ -40,10 +53,12 @@
     </section>
 
     <!-- Edit Product Modal -->
-    <div id="product-Modal" class="modal">
+    <div id="product-Modal" class="modal" style="display:none;">
         <div class="modal-content">
             <h2>Edit Product</h2>
             <form id="editProductForm" onsubmit="submitForm(event)">
+                <input type="hidden" id="productId" name="id">
+                
                 <label for="name">Name:</label>
                 <input type="text" id="name" name="name" required>
 
@@ -71,7 +86,7 @@
                 <label for="color">Color:</label>
                 <input type="text" id="color" name="color" required>
 
-                <button id="save-btn">Save Changes</button>
+                <button type="submit" id="save-btn">Save Changes</button>
             </form>
         </div>
     </div>

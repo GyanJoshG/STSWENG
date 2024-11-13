@@ -2,14 +2,32 @@ import Product from '../schemas/ProductSchema.js';
 import Shipping from '../schemas/ShippingSchema.js';
 
 const cartController = {
-    getCart: (req, res) => {
+    getCart: (req, res, next) => {
         console.log('getCart() called');
+
+        if(req.session.user) {
+            const cart = req.session.cart || {}; // Default to an empty object if no cart exists
+            
+            console.log('Cart in session: ', cart);
+            
+            // Check if cart is an object
+            if (typeof cart !== 'object' || Array.isArray(cart)) {
+                return res.status(400).send('Cart is not in expected format');
+            }
         
-        try {
-            res.render('cart', { cart: req.session.cart || {} });
-        } catch (err) {
-            console.error(err);
-            res.status(500).json({ error: err.message });
+            // Calculate total amount and prepare data for rendering
+            const cartItems = Object.entries(cart).map(([name, item]) => ({
+                name,
+                price: item.price,
+                quantity: item.inCart,
+            }));
+        
+            const total = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+        
+            res.render('cart', { cart: cartItems, total });
+        } else {
+            req.body = { stat: 401, title: 'Cart Inaccessible', body: 'Cart not accessible. Please log in first.' };
+            next();
         }
     },
 
