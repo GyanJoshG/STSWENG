@@ -66,19 +66,25 @@
             <p></p>
             <button id="proceed-btn">Proceed</button>
 
-            <!-- Placeholder for QR Code -->
-            <div id="qr-code" style="display:none; margin-top: 20px;">
-                <h3>Scan this QR code for payment:</h3>
-                <img src="https://via.placeholder.com/150" alt="QR Code" />
-                <p>Please pay the appropriate amount before confirming.</p>
-                <button id="confirm-btn">Confirm</button>
-            </div>
-
-            <!-- Placeholder for confirmation message -->
-            <div id="confirmation-message" style="display:none; margin-top: 20px;">
-                <h3>Thank you for your order!</h3>
-                <p>Your order will be delivered soon. Please prepare the cash for delivery.</p>
-                <button id="confirm-btn">Confirm</button>
+            <!-- Second Modal for QR Code or Confirmation Message -->
+            <div id="proceed-modal" class="modal">
+                <div class="modal-content">
+                    <div id="qr-code-section" style="display: none;">
+                        <h3>Scan QR Code</h3>
+                        <h3>Total: ₱<span id="total-amount">{{total}}</span></h3>
+                        <p>Please pay the appropriate amount before confirming</p>
+                        <p>Thank you!</p>
+                        <img src="https://via.placeholder.com/200x200?text=QR+Code" alt="QR Code">
+                    </div>
+                    <div id="confirmation-section" style="display: none;">
+                        <h3>Order Confirmation</h3>
+                        <h3>Total: ₱<span id="total-amount">{{total}}</span></h3>
+                        <p>Please press confirm to finalize your order</p>
+                        <p>Thank you!</p>
+                    </div>
+                    <button id="close-proceed-modal">Back</button>
+                    <button id="confirm-btn">Confirm</button>
+                </div>
             </div>
         </div>
     </div>
