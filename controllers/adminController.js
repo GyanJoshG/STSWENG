@@ -36,7 +36,20 @@ const adminController = {
             console.error(err);
             res.status(500).json({ error: 'Failed to delete product.' });
         }
-    }
+    },
+
+    createProduct: async (req, res) => {
+        try {
+            const { name, price, stock, sold, isAvailable, type, occasion, imgSrc, color } = req.body;
+            const createdProduct = await Product.create(
+                { name, price, stock, sold, isAvailable, type, occasion, imgSrc, color } 
+            );
+            res.status(200).json({ message: 'Product created successfully!', product: createdProduct });
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Failed to create product.' });
+        }
+    },
 };
 
 export default adminController;

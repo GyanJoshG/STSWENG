@@ -32,10 +32,13 @@ document.addEventListener('DOMContentLoaded', function () {
     window.onclick = function (event) {
         const productModal = document.getElementById('product-Modal');
         const deleteModal = document.getElementById('delete-Modal');
+        const createModal = document.getElementById('create-Modal');
         if (event.target === productModal) {
             productModal.style.display = 'none';
         } else if (event.target === deleteModal) {
             deleteModal.style.display = 'none';
+        } else if (event.target === createModal) {
+            createModal.style.display = 'none';
         }
     };
 
@@ -81,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('cancel-btn').onclick = function() {
         document.getElementById('delete-Modal').style.display = 'none';
-    }
+    };
     
     document.querySelectorAll('.delete-btn').forEach(button => {
         button.onclick = function () {            
@@ -128,6 +131,50 @@ document.addEventListener('DOMContentLoaded', function () {
 
         } catch (error) {
             console.error('Error in product delete process:', error);
+        }
+    };
+
+    document.getElementById('add-btn').onclick = function () {
+        document.getElementById('create-Modal').style.display = 'block';
+    };
+
+    const createForm = document.getElementById('createProductForm');
+    createForm.onsubmit = async (event) => {
+        event.preventDefault();  
+        const productData = {
+            name: document.getElementById('create-name').value,
+            price: document.getElementById('create-price').value,
+            stock: document.getElementById('create-stock').value,
+            isAvailable: document.getElementById('create-isAvailable').checked,
+            sold: 0,
+            type: document.getElementById('create-type').value,
+            occasion: document.getElementById('create-occasion').value,
+            imgSrc: document.getElementById('create-imgSrc').value,
+            color: document.getElementById('create-color').value
+        };
+        try {
+            const response = await fetch('/admin/create-product', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(productData),
+            });
+
+            if (!response.ok) {
+                console.error('Failed to create product. Response status:', response.status);
+                const errorText = await response.text();
+                console.error('Error response text:', errorText);
+                throw new Error(`Failed to create product with status: ${response.status}`);
+            }
+
+            const result = await response.json();
+            console.log('Product create response:', result);  
+
+            location.reload();
+
+        } catch (error) {
+            console.error('Error in product create process:', error);
         }
     };
 });
