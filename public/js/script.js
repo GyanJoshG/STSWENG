@@ -7,8 +7,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const filter = document.getElementById('filter');
     const cartElement = document.getElementById('cart');
     const logout = document.getElementById('logout');
+    const userId = "{{userId}}";
 
-
+    console.log('Logged-in user ID:', userId);
     const navLinks = document.getElementById('navbar');
     if (!navLinks) {
         console.error('Element with class "navbar" not found.');

@@ -31,7 +31,7 @@ const loginController = {
             const match = await bcrypt.compare(password, user.password);
     
             if (match) {
-                req.session.user = { username: user.username };
+                req.session.user = { username: user.username, _id: user._id };
                 const isAdmin = user.isAdmin === true; 
                 return res.status(200).json({ message: 'Login successful!', isAdmin });
             } else {

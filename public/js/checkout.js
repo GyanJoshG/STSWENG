@@ -78,9 +78,10 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Invalid zip code.');
             return;
         }
-        
+
         console.log("Shipping Data:", shippingData);
-        
+        window.shippingData = shippingData;
+
         const proceedModal = document.getElementById('proceed-modal');
         const qrCodeSection = document.getElementById('qr-code-section');
         const confirmationSection = document.getElementById('confirmation-section');
@@ -107,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     
         try {
-            const response = await fetch('/submit-order', {
+            const response = await fetch('/checkout', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -121,6 +122,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
             alert('Order submitted successfully!');
             closeModal('proceed-modal');
+
+            //location.reload();
         } catch (error) {
             console.error('Failed to submit order:', error);
             alert('Failed to submit order. Please try again.');

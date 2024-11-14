@@ -6,7 +6,7 @@ const OrderSchema = new mongoose.Schema(
     {
       userId: { type: ObjectId, required: true },
       items: { type: [Item], required: true },
-      shipping: { type: ObjectId, ref: 'Shipping', required: true },
+      shipping: { type: mongoose.Schema.Types.ObjectId, ref: 'Shipping', required: true },
       totalPrice: { type: Number, required: true },
       status: { type: String, required: true, enum: ['Pending', 'Shipped', 'Delivered'], default: 'Pending', required: true },
     },
