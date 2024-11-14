@@ -29,13 +29,13 @@ document.addEventListener('DOMContentLoaded', function () {
         };
     });
 
-
-    //this part is not working on my end.
     window.onclick = function (event) {
         const productModal = document.getElementById('product-Modal');
         const deleteModal = document.getElementById('delete-Modal');
-        if (event.target === productModal || event.target === deleteModal) {
-            modal.style.display = 'none';
+        if (event.target === productModal) {
+            productModal.style.display = 'none';
+        } else if (event.target === deleteModal) {
+            deleteModal.style.display = 'none';
         }
     };
 
