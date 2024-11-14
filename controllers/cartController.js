@@ -98,7 +98,7 @@ const cartController = {
         console.log('Checkout initiated');
         
         try {
-            const shippingData = req.body;  // Capture the shipping data
+            const shippingData = req.body; 
             const cartItems = Object.entries(req.session.cart);
             
             if (cartItems.length === 0) {
@@ -141,19 +141,17 @@ const cartController = {
             await newShipping.save();
             console.log('Shipping data saved:', newShipping);
     
-            // Now, create the new order and include the shipping data
             console.log('Creating new order...');
             const newOrder = new Order({
                 userId: req.session.user._id,
                 totalItems,
-                shipping: newShipping, // Passing the full shipping data, not just the ID
+                shipping: newShipping, 
                 totalPrice,
-                status: 'Pending'  // Ensure 'pending' is allowed in the schema
+                status: 'Pending'  
             });
             await newOrder.save();
             console.log('New order saved:', newOrder);
     
-            // Update the User with the new order and shipping data
             console.log('Updating user with new order...');
             const updatedUser = await User.updateOne(
                 { _id: req.session.user._id }, 
@@ -170,12 +168,11 @@ const cartController = {
     
             console.log('User updated with new order and shippingId:', updatedUser);
     
-            // Clear the cart after successful checkout
             req.session.cart = {};
             console.log('Cart cleared after checkout');
     
-            // Send success response
             res.status(201).json({ message: 'Checkout successful!' });
+            location.reload
         } catch (error) {
             console.error('Error during checkout:', error);
             res.status(500).json({ message: 'Error during checkout', error: error.message });
