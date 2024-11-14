@@ -23,7 +23,18 @@ const adminController = {
             res.status(200).json({ message: 'Product updated successfully!', product: updatedProduct });
         } catch (err) {
             console.error(err);
-            res.status(500).json({ error: 'Failed to update product' });
+            res.status(500).json({ error: 'Failed to update product.' });
+        }
+    },
+
+    deleteProduct: async (req, res) => {
+        try {
+            const { id } = req.body;
+            const deletedProduct = await Product.findByIdAndDelete(id);
+            res.status(200).json({ message: 'Product deleted successfully!', product: deletedProduct });
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Failed to delete product.' });
         }
     }
 };

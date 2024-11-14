@@ -29,17 +29,19 @@ document.addEventListener('DOMContentLoaded', function () {
         };
     });
 
+
+    //this part is not working on my end.
     window.onclick = function (event) {
-        const modal = document.getElementById('product-Modal');
-        if (event.target === modal) {
+        const productModal = document.getElementById('product-Modal');
+        const deleteModal = document.getElementById('delete-Modal');
+        if (event.target === productModal || event.target === deleteModal) {
             modal.style.display = 'none';
         }
     };
 
-    const form = document.getElementById('editProductForm');
-    form.onsubmit = async (event) => {
+    const editForm = document.getElementById('editProductForm');
+    editForm.onsubmit = async (event) => {
         event.preventDefault();  
-
         const productData = {
             id: document.getElementById('productId').value,
             name: document.getElementById('name').value,
@@ -51,9 +53,6 @@ document.addEventListener('DOMContentLoaded', function () {
             imgSrc: document.getElementById('imgSrc').value,
             color: document.getElementById('color').value
         };
-
-        console.log('Product Data to be saved:', productData);
-
         try {
             const response = await fetch('/admin/edit-product', {
                 method: 'POST',
@@ -80,4 +79,55 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
+    document.getElementById('cancel-btn').onclick = function() {
+        document.getElementById('delete-Modal').style.display = 'none';
+    }
+    
+    document.querySelectorAll('.delete-btn').forEach(button => {
+        button.onclick = function () {            
+            const product = {
+                id: button.dataset.prodid,
+                name: button.dataset.prodname,
+            };
+
+            document.getElementById('productIdTest').value = product.id;
+            document.getElementById('product-name').textContent = product.name; 
+
+            document.getElementById('delete-Modal').style.display = 'block'; 
+        };
+    });
+
+    const deleteForm = document.getElementById('deleteProductForm');
+    deleteForm.onsubmit = async (event) => {
+        event.preventDefault();
+        console.log('Product ID (deleteForm): ' + document.getElementById('productIdTest').value);
+        const productData = {
+            id: document.getElementById('productIdTest').value,
+            name: document.getElementById('name').value,
+        };
+
+        try {
+            const response = await fetch('/admin/delete-product', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(productData),
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('Failed to delete product. Response status:', response.status, 'Error text:', errorText);
+                throw new Error(`Failed to delete product with status: ${response.status}`);
+            }
+
+            const result = await response.json();
+            console.log('Product delete response:', result);
+
+            location.reload();
+
+        } catch (error) {
+            console.error('Error in product delete process:', error);
+        }
+    };
 });

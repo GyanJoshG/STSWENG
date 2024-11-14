@@ -43,7 +43,11 @@
                                 data-color="{{this.color}}">
                                 Edit
                             </button>
-                            <button class="delete-btn">Delete</button>
+                            <button class="delete-btn"
+                                data-prodid="{{this._id}}"
+                                data-prodname="{{this.name}}">
+                                Delete
+                            </button>
                         </td>
                     </tr>
                     {{/each}}
@@ -88,6 +92,19 @@
 
                 <button type="submit" id="save-btn">Save Changes</button>
             </form>
+        </div>
+    </div>
+
+    <!-- Delete Product Modal -->
+    <div id="delete-Modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <h2>Delete <span id="product-name"></span>?</h2> 
+            <form id="deleteProductForm" onsubmit="submitForm(event)">
+                <input type="hidden" id="productIdTest" name="id">
+                <button type="submit" id="delete-confirm">Delete</button>
+                <button type="button" id="cancel-btn">Cancel</button>
+            </form>
+
         </div>
     </div>
 </body>
