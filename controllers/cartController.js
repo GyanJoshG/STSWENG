@@ -96,11 +96,11 @@ const cartController = {
 
     checkout: async (req, res) => {
         console.log('Checkout initiated');
-        
+    
         try {
-            const shippingData = req.body; 
+            const shippingData = req.body;
             const cartItems = Object.entries(req.session.cart);
-            
+    
             if (cartItems.length === 0) {
                 console.log('Cart is empty. No items to process.');
                 return res.status(400).json({ message: 'Cart is empty. Cannot proceed with checkout.' });
@@ -111,10 +111,25 @@ const cartController = {
     
             console.log('Cart Items:', cartItems);
     
+            const orderItems = [];
+    
             for (let [name, item] of cartItems) {
                 totalItems += item.inCart;
                 totalPrice += item.inCart * item.price;
                 console.log(`Item: ${name}, Quantity: ${item.inCart}, Price: ${item.price}`);
+                
+                const product = await Product.findOne({ name });
+                if (!product) {
+                    console.error(`Product not found: ${name}`);
+                    return res.status(400).json({ message: `Product ${name} not found` });
+                }
+    
+                orderItems.push({
+                    productId: product._id,         // Reference to Product's _id
+                    productName: product.name,      // Store the product's name
+                    quantity: item.inCart,          // Quantity from the cart
+                    price: product.price            // Price from the product
+                });
             }
     
             console.log('Updating stock and sold for cart items...');
@@ -144,17 +159,18 @@ const cartController = {
             console.log('Creating new order...');
             const newOrder = new Order({
                 userId: req.session.user._id,
-                totalItems,
-                shipping: newShipping, 
+                items: orderItems, 
+                shipping: newShipping,
                 totalPrice,
-                status: 'Pending'  
+                status: 'Pending'
             });
+    
             await newOrder.save();
             console.log('New order saved:', newOrder);
     
             console.log('Updating user with new order...');
             const updatedUser = await User.updateOne(
-                { _id: req.session.user._id }, 
+                { _id: req.session.user._id },
                 {
                     $push: { orderIds: newOrder._id },
                     $set: { shippingId: newShipping._id }
@@ -172,12 +188,11 @@ const cartController = {
             console.log('Cart cleared after checkout');
     
             res.status(201).json({ message: 'Checkout successful!' });
-            location.reload
         } catch (error) {
             console.error('Error during checkout:', error);
             res.status(500).json({ message: 'Error during checkout', error: error.message });
         }
-    }    
+    }           
     
 }
 

@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Order submitted successfully!');
             closeModal('proceed-modal');
 
-            //location.reload();
+            location.reload();
         } catch (error) {
             console.error('Failed to submit order:', error);
             alert('Failed to submit order. Please try again.');
