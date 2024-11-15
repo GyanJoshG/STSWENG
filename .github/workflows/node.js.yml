@@ -26,6 +26,21 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    - name: Install Chrome
+      run: |
+        sudo apt-get update
+        sudo apt-get install google-chrome-stable
+        google-chrome --version
+    - name: Install ChromeDriver
+      run: |
+        CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+\.\d+')
+        wget -N https://chromedriver.storage.googleapis.com/LATEST_RELEASE
+        CHROMEDRIVER_VERSION=$(cat LATEST_RELEASE)
+        wget https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip
+        unzip chromedriver_linux64.zip
+        sudo mv chromedriver /usr/local/bin/chromedriver
+        chromedriver --version
     - run: npm ci
     - run: npm run build --if-present
-    - run: npm test
+    - name: Run tests
+      run: npm test
