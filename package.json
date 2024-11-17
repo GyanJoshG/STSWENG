@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "selenium-side-runner ./tests/selenium/tests.side"
+    "test": "selenium-side-runner --config-file ./tests/selenium/.side.yml ./tests/selenium/tests.side"
   },
   "author": "",
   "license": "ISC",
