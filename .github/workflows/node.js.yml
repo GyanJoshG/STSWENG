@@ -26,18 +26,14 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - name: Install Chrome
+    - name: Install Chromium
       run: |
         sudo apt update
-        sudo apt install -y wget curl gnupg
-        wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-        echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
-        sudo apt update
-        sudo apt-get install google-chrome-stable=114.0.5735.90-1
-        google-chrome --version
+        sudo apt install chromium-browser
+        chromium-browser --version
     - name: Install ChromeDriver
       run: |
-        CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+\.\d+')
+        CHROME_VERSION=$(chromium-browser --version | grep -oP '\d+\.\d+\.\d+\.\d+')
         wget -N https://chromedriver.storage.googleapis.com/LATEST_RELEASE
         CHROMEDRIVER_VERSION=$(cat LATEST_RELEASE)
         wget https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip
