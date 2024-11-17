@@ -28,18 +28,14 @@ jobs:
         cache: 'npm'
     - name: Install Chrome
       run: |
-        sudo apt-get update
-        sudo apt-get install google-chrome-stable
-        google-chrome --version
+        sudo apt-get purge google-chrome-stable
+        sudo wget http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_97.0.4692.71-1_amd64.deb && \
+        sudo dpkg -i google-chrome-stable_97.0.4692.71-1_amd64.deb && \
+        sudo apt-mark hold google-chrome-stable
     - name: Install ChromeDriver
       run: |
-        CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+\.\d+')
-        wget -N https://chromedriver.storage.googleapis.com/LATEST_RELEASE
-        CHROMEDRIVER_VERSION=$(cat LATEST_RELEASE)
-        wget https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip
-        unzip chromedriver_linux64.zip
-        sudo mv chromedriver /usr/local/bin/chromedriver
-        chromedriver --version
+        wget https://chromedriver.storage.googleapis.com/97.0.4692.71/chromedriver_linux64.zip
+        sudo unzip chromedriver_linux64.zip chromedriver -d /usr/local/bin
     - run: npm ci
     - run: npm run build --if-present
     - name: Run tests
