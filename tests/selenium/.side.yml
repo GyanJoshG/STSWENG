@@ -2,4 +2,4 @@ capabilities:
   browserName: 'chrome'
   goog:chromeOptions:
     args: 
-      - no-sandbox
+      - headless
