@@ -24,6 +24,7 @@ jobs:
       with:
         chrome-version: 131.0.6778.69
         install-chromedriver: true
+        install-dependencies: true
     - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
