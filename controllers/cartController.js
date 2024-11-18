@@ -96,7 +96,10 @@ const cartController = {
 
     checkout: async (req, res) => {
         console.log('Checkout initiated');
-    
+        
+        const session = await Product.startSession();
+        session.startTransaction();
+        
         try {
             const shippingData = req.body;
             const cartItems = Object.entries(req.session.cart);
@@ -118,10 +121,10 @@ const cartController = {
                 totalPrice += item.inCart * item.price;
                 console.log(`Item: ${name}, Quantity: ${item.inCart}, Price: ${item.price}`);
                 
-                const product = await Product.findOne({ name });
+                const product = await Product.findOne({ name }).session(session);
                 if (!product) {
                     console.error(`Product not found: ${name}`);
-                    return res.status(400).json({ message: `Product ${name} not found` });
+                    throw new Error(`Product ${name} not found`);
                 }
     
                 orderItems.push({
@@ -130,25 +133,6 @@ const cartController = {
                     quantity: item.inCart,          // Quantity from the cart
                     price: product.price            // Price from the product
                 });
-            }
-    
-            console.log('Updating stock and sold for cart items...');
-            for (let [name, item] of cartItems) {
-                console.log(`Processing item ${name}`);
-                const product = await Product.findOne({ name });
-                if (!product) {
-                    console.error(`Product not found: ${name}`);
-                    return res.status(400).json({ message: `Product ${name} not found` });
-                }
-                await Product.updateOne(
-                    { name },
-                    {
-                        $inc: {
-                            stock: -item.inCart,
-                            sold: item.inCart
-                        }
-                    }
-                );
             }
     
             console.log('Saving shipping data...');
@@ -179,10 +163,31 @@ const cartController = {
     
             if (updatedUser.nModified === 0) {
                 console.log('User update failed');
-                return res.status(400).json({ message: 'User update failed' });
+                throw new Error('User update failed');
             }
     
             console.log('User updated with new order and shippingId:', updatedUser);
+    
+            console.log('Updating stock and sold for cart items...');
+            for (let [name, item] of cartItems) {
+                console.log(`Processing item ${name}`);
+                const product = await Product.findOne({ name }).session(session);
+                if (!product) {
+                    console.error(`Product not found: ${name}`);
+                    throw new Error(`Product ${name} not found`);
+                }
+                await Product.updateOne(
+                    { name },
+                    {
+                        $inc: {
+                            stock: -item.inCart,
+                            sold: item.inCart
+                        }
+                    }).session(session);
+            }
+    
+            await session.commitTransaction();
+            session.endSession();
     
             req.session.cart = {};
             console.log('Cart cleared after checkout');
@@ -190,9 +195,11 @@ const cartController = {
             res.status(201).json({ message: 'Checkout successful!' });
         } catch (error) {
             console.error('Error during checkout:', error);
+            await session.abortTransaction();
+            session.endSession();
             res.status(500).json({ message: 'Error during checkout', error: error.message });
         }
-    }           
+    }              
     
 }
 

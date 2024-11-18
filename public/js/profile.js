@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
     const navLinks = document.getElementById('navbar');
+    
     if (!navLinks) {
-        console.error('Element with class "navbar" not found.');
-        return; // Exit the function if `navLinks` is not found
+        console.error('Element with id "navbar" not found.');
+        return; 
     }
 
-    // Check if `isAdmin` is correctly read from localStorage
     const isAdmin = localStorage.getItem('isAdmin') === 'true';
     console.log('isAdmin:', isAdmin); 
 
@@ -16,23 +16,18 @@ document.addEventListener('DOMContentLoaded', function() {
         navLinks.appendChild(adminLink);
     }
 
-    function showModal(orderId) {
-        // Show the modal
-        document.getElementById('cancel-modal').style.display = 'block';
-        // Store the orderId to use when confirming
-        window.currentOrderId = orderId;
-      }
-    
-      function cancelOrder() {
-        // Redirect or submit a form with the order ID
-        window.location.href = '/cancel-order/' + window.currentOrderId;
-      }
-    
-      // Close the modal if the user clicks outside
-      window.onclick = function(event) {
-        if (event.target === document.getElementById('cancel-modal')) {
-          document.getElementById('cancel-modal').style.display = 'none';
+    const orderListItems = document.querySelectorAll('.order-list-item');
+
+    orderListItems.forEach((orderItem) => {
+        const changeStatusForm = orderItem.querySelector('.change-status-form');
+        const cancelOrderForm = orderItem.querySelector('.cancel-order-form');
+
+        if (isAdmin) {
+            if (changeStatusForm) changeStatusForm.style.display = 'block';
+            if (cancelOrderForm) cancelOrderForm.style.display = 'none';
+        } else {
+            if (changeStatusForm) changeStatusForm.style.display = 'none';
+            if (cancelOrderForm) cancelOrderForm.style.display = 'block';
         }
-      }
-      
+    });
 });

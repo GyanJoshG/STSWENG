@@ -808,8 +808,27 @@ button:hover {
     border: none;
     cursor: pointer;
     font-size: 14px;
+    display: inline-block;  
+    width: 10%;            
+    text-align: center;     
   }
   
   .cancel-btn:hover {
     background-color: red;
+  }
+
+  .change-status-btn {
+    background-color: #f8e3e3;
+    color: black;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    display: inline-block;  
+    width: 10%;            
+    text-align: center;     
+  }
+  
+  .change-status-btn:hover {
+    background-color: green;
   }
