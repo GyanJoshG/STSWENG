@@ -20,26 +20,15 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
+    - uses: browser-actions/setup-chrome@v1
+      with:
+        install-chromedriver: true
     - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - name: Install Chromium
-      run: |
-        sudo apt update
-        sudo apt install chromium-browser
-        chromium-browser --version
-    - name: Install ChromeDriver
-      run: |
-        CHROME_VERSION=$(chromium-browser --version | grep -oP '\d+\.\d+\.\d+\.\d+')
-        wget -N https://chromedriver.storage.googleapis.com/LATEST_RELEASE
-        CHROMEDRIVER_VERSION=$(cat LATEST_RELEASE)
-        wget https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip
-        unzip chromedriver_linux64.zip
-        sudo mv chromedriver /usr/local/bin/chromedriver
-        chromedriver --version
     - run: npm ci
     - run: npm run build --if-present
     - name: Run tests
