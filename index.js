@@ -3,6 +3,7 @@ import session from 'express-session';
 import exphbs from 'express-handlebars';
 import express from 'express';
 import dotenv from 'dotenv';
+import Handlebars from 'handlebars';
 import helmet from 'helmet';
 
 // Database connection
@@ -17,6 +18,8 @@ import usersRouter from './server/api/users.js';
 import ordersRouter from './server/api/orders.js';
 import loginRouter from './server/api/login.js';
 import cartRouter from './server/api/cart.js'
+import adminRouter from './server/api/admin.js'
+import profileRouter from './server/api/profile.js'
 
 const app = express();
 const PORT = process.env.PORT;
@@ -33,7 +36,7 @@ app.use(session({
 	saveUninitialized: false,
 	cookie: { secure: false }
 }));
-app.engine('.hbs', exphbs.engine({ extname: '.hbs', defaultLayout: 'main' }));
+app.engine('.hbs', exphbs.engine({ extname: '.hbs', defaultLayout: 'main', runtimeOptions: {allowProtoPropertiesByDefault: true} }));
 app.set('view engine', '.hbs');
 // app.use(
 //   helmet({
@@ -46,7 +49,10 @@ app.set('view engine', '.hbs');
 //     },
 //   })
 // );
-
+Handlebars.registerHelper('eq', function (a, b) {
+	return a === b;
+  });
+  
 app.use('/', indexRouter);
 app.use('/', signupRouter);
 app.use('/', productsRouter);
@@ -57,6 +63,8 @@ app.use('/', usersRouter);
 app.use('/', indexRouter);
 app.use('/', cartRouter);
 app.use('/', loginRouter);
+app.use('/', adminRouter);
+app.use('/', profileRouter);
 
 /**
  * Middleware function to handle 404 errors.

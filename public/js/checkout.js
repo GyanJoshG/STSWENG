@@ -1,59 +1,104 @@
 document.addEventListener('DOMContentLoaded', function() {
-
-    function openModal() {
-        document.getElementById('checkout-modal').style.display = 'block';
+    const navLinks = document.getElementById('navbar');
+    if (!navLinks) {
+        console.error('Element with class "navbar" not found.');
+        return; // Exit the function if `navLinks` is not found
     }
 
-    function closeModal() {
-        resetModal();
-        document.getElementById('checkout-modal').style.display = 'none';
+    // Check if `isAdmin` is correctly read from localStorage
+    const isAdmin = localStorage.getItem('isAdmin') === 'true';
+    console.log('isAdmin:', isAdmin); 
+
+    if (isAdmin && !navLinks.querySelector('a[href="/admin"]')) {
+        const adminLink = document.createElement('a');
+        adminLink.href = '/admin';
+        adminLink.textContent = 'Admin';
+        navLinks.appendChild(adminLink);
     }
 
-    function resetModal() {
-        document.getElementById('qr-code').style.display = 'none';
-        document.getElementById('confirmation-message').style.display = 'none';
-        
-        document.getElementById('shipping-form').reset();
+    function openModal(modalId) {
+        document.getElementById(modalId).style.display = 'block';
     }
 
-    document.querySelector('.close-btn').onclick = closeModal;
+    function closeModal(modalId) {
+        document.getElementById(modalId).style.display = 'none';
+    }
 
     document.getElementById('checkout-btn').onclick = function() {
-        openModal();
+        openModal('checkout-modal');
     }
 
     window.onclick = function(event) {
-    const modal = document.getElementById('checkout-modal');
-        if (event.target === modal) {
-            closeModal();
+        const checkoutModal = document.getElementById('checkout-modal');
+        const proceedModal = document.getElementById('proceed-modal');
+        if (event.target === checkoutModal) {
+            closeModal('checkout-modal');
+        } else if (event.target === proceedModal) {
+            closeModal('proceed-modal');
         }
     }
 
-    document.getElementById('proceed-btn').onclick = function() {
+    document.getElementById('proceed-btn').onclick = function () {
         const shippingData = {
-            firstName: document.getElementById('firstName').value,
-            lastName: document.getElementById('lastName').value,
-            phoneNumber: document.getElementById('phoneNumber').value,
+            firstName: document.getElementById('firstName').value.trim(),
+            lastName: document.getElementById('lastName').value.trim(),
+            phoneNumber: document.getElementById('phoneNumber').value.trim(),
             address: {
-                street: document.getElementById('street').value,
-                city: document.getElementById('city').value,
-                state: document.getElementById('state').value,
-                zipCode: document.getElementById('zipCode').value,
+                street: document.getElementById('street').value.trim(),
+                city: document.getElementById('city').value.trim(),
+                state: document.getElementById('state').value.trim(),
+                zipCode: document.getElementById('zipCode').value.trim(),
             },
             preferredPaymentMethod: document.getElementById('paymentMethod').value,
         };
-    
+
+        for (const key in shippingData) {
+            if (typeof shippingData[key] === 'object') {
+                for (const subKey in shippingData[key]) {
+                    if (!shippingData[key][subKey]) {
+                        alert(`Please fill in your ${subKey.replace(/([A-Z])/g, ' $1').toLowerCase()}.`);
+                        console.error(`Missing field: ${subKey}`);
+                        return;
+                    }
+                }
+            } else if (!shippingData[key]) {
+                alert(`Please fill in your ${key.replace(/([A-Z])/g, ' $1').toLowerCase()}.`);
+                console.error(`Missing field: ${key}`);
+                return;
+            }
+        }
+        
+        if (isNaN(shippingData.phoneNumber) || shippingData.phoneNumber === '') {
+            alert('Please enter a valid phone number.');
+            console.error('Invalid phone number.');
+            return;
+        }
+        if (isNaN(shippingData.address.zipCode) || shippingData.address.zipCode === '') {
+            alert('Please enter a valid zip code.');
+            console.error('Invalid zip code.');
+            return;
+        }
+
         console.log("Shipping Data:", shippingData);
+        window.shippingData = shippingData;
+
+        const proceedModal = document.getElementById('proceed-modal');
+        const qrCodeSection = document.getElementById('qr-code-section');
+        const confirmationSection = document.getElementById('confirmation-section');
     
         if (shippingData.preferredPaymentMethod === 'Gcash') {
-            document.getElementById('qr-code').style.display = 'block';
-            document.getElementById('confirmation-message').style.display = 'none';
+            qrCodeSection.style.display = 'block';
+            confirmationSection.style.display = 'none';
         } else if (shippingData.preferredPaymentMethod === 'Cash on Delivery') {
-            document.getElementById('confirmation-message').style.display = 'block';
-            document.getElementById('qr-code').style.display = 'none';
+            confirmationSection.style.display = 'block';
+            qrCodeSection.style.display = 'none';
         }
     
-        window.shippingData = shippingData;
+        proceedModal.style.display = 'block';
+    };
+    
+    document.getElementById('close-proceed-modal').onclick = function () {
+        document.getElementById('proceed-modal').style.display = 'none';
     };
 
     document.getElementById('confirm-btn').onclick = async function() {
@@ -63,21 +108,25 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     
         try {
-            const response = await fetch('/cart/checkout', {
+            const response = await fetch('/checkout', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(window.shippingData),
+                body: JSON.stringify(window.shippingData)
             });
     
-            const result = await response.json();
-            console.log(result.message);
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
     
+            alert('Order submitted successfully!');
+            closeModal('proceed-modal');
+
+            location.reload();
         } catch (error) {
-            console.error('Error submitting shipping data:', error);
+            console.error('Failed to submit order:', error);
+            alert('Failed to submit order. Please try again.');
         }
-    
-        closeModal();
     };
 });

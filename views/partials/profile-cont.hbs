@@ -1,0 +1,85 @@
+<nav class="navbar">
+    <img src="https://via.placeholder.com/200x50?text=Logo+Here" alt="Logo">
+    <div id="navbar" class="nav-links"> 
+        <a href="/">Home</a>
+    </div>
+    <div class="nav-icons"></div>
+        <a href="/profile" class="profile-link">
+            <div class="profile-circle">
+                <img src="https://via.placeholder.com/40x40?text=User" alt="Profile">
+            </div>
+        </a>
+    </div>
+</nav>
+
+<body>
+  <script>
+    function confirmAction(message) {
+      return confirm(message);
+    }
+  </script>
+
+  <div class="container">
+    <div class="profile-header">
+      <div class="profile-image">
+        <img src="https://via.placeholder.com/80x80?text=User" alt="User Profile">
+      </div>
+      <div>
+        <h1>{{user.username}}</h1>
+      </div>
+    </div>
+   
+    <div class="section orders">
+      <h2>Orders</h2>
+      <ul>
+        {{#each orders}}  
+          <li class="order-list-item">
+            <h3>Status: {{this.status}} - Total: ${{this.totalPrice}}</h3>
+            <ul>
+              {{#each this.items}}  
+                <li>
+                  Product: {{this.productName}} - Quantity: {{this.quantity}} - Price: ${{this.price}}
+                </li>
+              {{/each}}
+            </ul>
+            <h4>Shipping Information</h4>
+            <p>
+              Name: {{this.shipping.firstName}} {{this.shipping.lastName}}<br>
+              Phone: {{this.shipping.phoneNumber}}<br>
+              <b> Address </b> <br>
+              Street: {{this.shipping.address.street}} <br>
+              City: {{this.shipping.address.city}} <br>
+              State: {{this.shipping.address.state}}  <br>
+              Zip Code: {{this.shipping.address.zipCode}}<br>
+              <b> Payment Method: </b> {{this.shipping.preferredPaymentMethod}}
+            </p>
+
+            <div class="change-status-form" style="display:none;">
+              <form action="/change-order-status" method="POST" onsubmit="return confirmAction('Are you sure you want to change the status?')">
+                <input type="hidden" name="orderId" value="{{this._id}}">
+                <label for="status">Change Status:</label>
+                <select name="status" id="status">
+                  <option value="Pending" {{#if (eq this.status "Pending")}}selected{{/if}}>Pending</option>
+                  <option value="Shipped" {{#if (eq this.status "Shipped")}}selected{{/if}}>Shipped</option>
+                  <option value="Delivered" {{#if (eq this.status "Delivered")}}selected{{/if}}>Delivered</option>
+                </select>
+                <button type="submit" class="change-status-btn">Update Status</button>
+              </form>
+            </div>
+
+            <div class="cancel-order-form" style="display:none;">
+              {{#if (eq this.status "Pending")}} 
+                <form action="/cancel-order" method="POST" onsubmit="return confirmAction('Are you sure you want to cancel this order?')">
+                  <input type="hidden" name="orderId" value="{{this._id}}">
+                  <button type="submit" class="cancel-btn">Cancel Order</button>
+                </form>
+              {{/if}}
+            </div>
+          </li>
+        {{else}}
+          <li>No orders found.</li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+</body>

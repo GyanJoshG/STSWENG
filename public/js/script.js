@@ -7,6 +7,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     const filter = document.getElementById('filter');
     const cartElement = document.getElementById('cart');
     const logout = document.getElementById('logout');
+    const userId = "{{userId}}";
+
+    console.log('Logged-in user ID:', userId);
+    const navLinks = document.getElementById('navbar');
+    if (!navLinks) {
+        console.error('Element with class "navbar" not found.');
+        return; // Exit the function if `navLinks` is not found
+    }
+
+    // Check if `isAdmin` is correctly read from localStorage
+    const isAdmin = localStorage.getItem('isAdmin') === 'true';
+    console.log('isAdmin:', isAdmin); 
+
+    if (isAdmin && !navLinks.querySelector('a[href="/admin"]')) {
+        const adminLink = document.createElement('a');
+        adminLink.href = '/admin';
+        adminLink.textContent = 'Admin';
+        navLinks.appendChild(adminLink);
+    }
 
     let cart = {};
     let currentSlide = 0;
@@ -39,7 +58,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     
         try {
-            const response = await fetch('/cart/add-to-cart', { 
+            const response = await fetch('/add-to-cart', { 
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -115,7 +134,7 @@ document.addEventListener('DOMContentLoaded', async () => {
      */
     window.updateQuantity = async function(itemName, change) {
         try {
-            const response = await fetch('/cart/update-quantity', {
+            const response = await fetch('/update-quantity', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -303,4 +322,5 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
     }
+    
 });
