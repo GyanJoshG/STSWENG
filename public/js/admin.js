@@ -80,4 +80,31 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
+    log.onclick = (event) => {
+        if(log.innerText === 'Logout') {
+            event.preventDefault();
+            const userConfirmed = confirm('Are you sure you want to log out?');
+
+            if(userConfirmed) {
+                fetch('/api/logout', // URI
+                    {
+                        method: 'post', // POST request
+                        headers: { 'Content-Type': 'application/json' }
+                    }
+                ).then(async (res) => {
+                    const result = await res.json();
+        
+                    if(res.ok) {
+                        utils.inform(false, result.message);
+                        window.location.href = '/login';
+                    } else {
+                        utils.inform(true, `Error logging out: ${result.error}`);
+                    }
+                })
+                .catch((err) => { // Catch POST request errors
+                    utils.inform(true, `Unexpected error occured: ${err}`);
+                }); 
+            }
+        }
+    }
 });

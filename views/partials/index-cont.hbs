@@ -1,6 +1,6 @@
 <nav class="navbar">
-    <img src = "https://via.placeholder.com/200x50?text=Logo+Here" alt="Logo">
-    <div id="navbar" class="nav-links"> 
+    <img src="https://via.placeholder.com/200x50?text=Logo+Here" alt="Logo">
+    <div id="navbar" class="nav-links">
         <a href="#products">Products</a>
         <a href="#about-contact">About & Contact</a>
         <a id="log" 
@@ -10,12 +10,17 @@
         href="#">Logout</a>
         {{/if}}
     </div>
-    <div class="nav-icons"></div>
+    <div class="nav-icons">
         <a href="/cart" class="icon-link">
             <span id="cartSpan">
                 <i class="fa-solid fa-cart-shopping"></i>
                 <div id="cart">Cart</div>
             </span>
+        </a>
+        <a href="/profile" class="profile-link">
+            <div class="profile-circle">
+                <img src="https://via.placeholder.com/40x40?text=User" alt="Profile">
+            </div>
         </a>
     </div>
 </nav>

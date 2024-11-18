@@ -2,8 +2,19 @@
     <img src="https://via.placeholder.com/200x50?text=Logo+Here" alt="Logo">
     <div id="navbar" class="nav-links"> 
         <a href="/">Home</a>
-        <a href="#products">Products</a>
-        <a href="#about-contact">About & Contact</a>
+        <a id="log" 
+        {{#if isLogin}}
+        href="login">Login</a>
+        {{else}}
+        href="#">Logout</a>
+        {{/if}}
+    </div>
+    <div class="nav-icons"></div>
+        <a href="/profile" class="profile-link">
+            <div class="profile-circle">
+                <img src="https://via.placeholder.com/40x40?text=User" alt="Profile">
+            </div>
+        </a>
     </div>
 </nav>
 

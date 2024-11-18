@@ -1,0 +1,67 @@
+<nav class="navbar">
+    <img src="https://via.placeholder.com/200x50?text=Logo+Here" alt="Logo">
+    <div id="navbar" class="nav-links"> 
+        <a href="/">Home</a>
+    </div>
+    <div class="nav-icons"></div>
+        <a href="/profile" class="profile-link">
+            <div class="profile-circle">
+                <img src="https://via.placeholder.com/40x40?text=User" alt="Profile">
+            </div>
+        </a>
+    </div>
+</nav>
+
+<body>
+    <script>
+  function confirmCancellation() {
+    return confirm("Are you sure you want to cancel this order?");
+  }
+</script>
+
+    <div class="container">
+        <div class="profile-header">
+            <div class="profile-image">
+                <img src="https://via.placeholder.com/80x80?text=User" alt="User Profile">
+            </div>
+            <div>
+                <h1>{{user.username}}</h1>
+            </div>
+        </div>
+
+    <div class="section orders">
+      <h2>Orders</h2>
+      <ul>
+        {{#each orders}}  
+          <li>
+            <h3>Status: {{this.status}} - Total: ${{this.totalPrice}}</h3>
+            <ul>
+              {{#each this.items}}  
+                <li>Product: {{this.productName}} - Quantity: {{this.quantity}} - Price: ${{this.price}}</li>
+              {{/each}}
+            </ul>
+            {{#if (eq this.status "Pending")}} 
+                <form action="/cancel-order" method="POST" onsubmit="return confirmCancellation()">
+                    <input type="hidden" name="orderId" value="{{this._id}}">
+                    <button type="submit" class="cancel-btn">Cancel Order</button>
+                </form>
+            {{/if}}
+          </li>
+        {{else}}
+          <li>No orders found.</li>
+        {{/each}}
+      </ul>
+
+    </div>
+        <!-- Will be updated -->
+        <div class="section shipping-address">
+            <h2>Shipping Address</h2>
+            <ul>
+                <li>John Doe</li>
+                <li>123 Blossom Street</li>
+                <li>Flowertown, FL 12345</li>
+                <li>Phone: (555) 123-4567</li>
+            </ul>
+        </div>
+    </div>
+</body>
