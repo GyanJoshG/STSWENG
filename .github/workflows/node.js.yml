@@ -22,6 +22,7 @@ jobs:
     steps:
     - uses: browser-actions/setup-chrome@v1
       with:
+        chrome-version: 131.0.6778.69
         install-chromedriver: true
     - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
