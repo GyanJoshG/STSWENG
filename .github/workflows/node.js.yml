@@ -13,6 +13,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      PORT: ${{ vars.PORT }}
+
     steps:
     - name: Install Chrome/Chromium and ChromeDriver
       uses: browser-actions/setup-chrome@v1 # Uses the version 1 of setup-chrome action
