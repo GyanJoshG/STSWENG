@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "selenium-side-runner --config-file ./tests/selenium/.side.yml ./tests/selenium/tests.side",
-    "build": "node index.js"
+    "start-server": "node index.js",
+    "ci": "start-server-and-test start-server http://localhost:5000 test"
   },
   "author": "",
   "license": "ISC",
@@ -22,6 +23,7 @@
   "type": "module",
   "devDependencies": {
     "nodemon": "^3.1.7",
-    "selenium-side-runner": "^4.0.12"
+    "selenium-side-runner": "^4.0.12",
+    "start-server-and-test": "^2.0.8"
   }
 }
