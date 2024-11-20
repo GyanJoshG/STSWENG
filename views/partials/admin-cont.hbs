@@ -18,6 +18,9 @@
     <section id="product-list">
         <div class="table-container">
             <h2>Product List</h2>
+            <div class="btn-container">
+                <button id="add-btn">Add</button>
+            </div>
             <table class="product-table">
                 <thead>
                     <tr>
@@ -50,7 +53,11 @@
                                 data-color="{{this.color}}">
                                 Edit
                             </button>
-                            <button class="delete-btn">Delete</button>
+                            <button class="delete-btn"
+                                data-prodid="{{this._id}}"
+                                data-prodname="{{this.name}}">
+                                Delete
+                            </button>
                         </td>
                     </tr>
                     {{/each}}
@@ -76,7 +83,7 @@
                 <input type="number" id="stock" name="stock" required>
 
                 <label for="sold">Sold:</label>
-                <input type="number" id="sold" name="sold" required>
+                <input type="number" id="sold" name="sold" value=0 disabled>
 
                 <label for="isAvailable">Available:</label>
                 <input type="checkbox" id="isAvailable" name="isAvailable">
@@ -94,6 +101,56 @@
                 <input type="text" id="color" name="color" required>
 
                 <button type="submit" id="save-btn">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Product Modal -->
+    <div id="delete-Modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <h2>Delete <span id="product-name"></span>?</h2> 
+            <form id="deleteProductForm" onsubmit="submitForm(event)">
+                <input type="hidden" id="productIdTest" name="id">
+                <button type="submit" id="delete-confirm">Delete</button>
+                <button type="button" id="cancel-btn">Cancel</button>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- Create Product Modal -->
+    <div id="create-Modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <h2>Add Product</h2>
+            <form id="createProductForm" onsubmit="submitForm(event)">                
+                <label for="name">Name:</label>
+                <input type="text" id="create-name" name="name" required>
+
+                <label for="price">Price:</label>
+                <input type="number" id="create-price" name="price" required>
+
+                <label for="stock">Stock:</label>
+                <input type="number" id="create-stock" name="stock" required>
+
+                <label for="sold">Sold:</label>
+                <input type="number" id="create-sold" name="sold" value=0 disabled>
+
+                <label for="isAvailable">Available:</label>
+                <input type="checkbox" id="create-isAvailable" name="isAvailable">
+
+                <label for="type">Type:</label>
+                <input type="text" id="create-type" name="type" required>
+
+                <label for="occasion">Occasion:</label>
+                <input type="text" id="create-occasion" name="occasion" required>
+
+                <label for="imgSrc">Image URL:</label>
+                <input type="text" id="create-imgSrc" name="imgSrc" required>
+
+                <label for="color">Color:</label>
+                <input type="text" id="create-color" name="color" required>
+
+                <button type="submit" id="create-btn">Add Product</button>
             </form>
         </div>
     </div>

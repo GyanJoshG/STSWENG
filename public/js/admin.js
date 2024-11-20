@@ -30,16 +30,21 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     window.onclick = function (event) {
-        const modal = document.getElementById('product-Modal');
-        if (event.target === modal) {
-            modal.style.display = 'none';
+        const productModal = document.getElementById('product-Modal');
+        const deleteModal = document.getElementById('delete-Modal');
+        const createModal = document.getElementById('create-Modal');
+        if (event.target === productModal) {
+            productModal.style.display = 'none';
+        } else if (event.target === deleteModal) {
+            deleteModal.style.display = 'none';
+        } else if (event.target === createModal) {
+            createModal.style.display = 'none';
         }
     };
 
-    const form = document.getElementById('editProductForm');
-    form.onsubmit = async (event) => {
+    const editForm = document.getElementById('editProductForm');
+    editForm.onsubmit = async (event) => {
         event.preventDefault();  
-
         const productData = {
             id: document.getElementById('productId').value,
             name: document.getElementById('name').value,
@@ -51,9 +56,6 @@ document.addEventListener('DOMContentLoaded', function () {
             imgSrc: document.getElementById('imgSrc').value,
             color: document.getElementById('color').value
         };
-
-        console.log('Product Data to be saved:', productData);
-
         try {
             const response = await fetch('/admin/edit-product', {
                 method: 'POST',
@@ -79,7 +81,103 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('Error in product update process:', error);
         }
     };
+  
+    document.getElementById('cancel-btn').onclick = function() {
+        document.getElementById('delete-Modal').style.display = 'none';
+    };
+    
+    document.querySelectorAll('.delete-btn').forEach(button => {
+        button.onclick = function () {            
+            const product = {
+                id: button.dataset.prodid,
+                name: button.dataset.prodname,
+            };
 
+            document.getElementById('productIdTest').value = product.id;
+            document.getElementById('product-name').textContent = product.name; 
+
+            document.getElementById('delete-Modal').style.display = 'block'; 
+        };
+    });
+
+    const deleteForm = document.getElementById('deleteProductForm');
+    deleteForm.onsubmit = async (event) => {
+        event.preventDefault();
+        console.log('Product ID (deleteForm): ' + document.getElementById('productIdTest').value);
+        const productData = {
+            id: document.getElementById('productIdTest').value,
+            name: document.getElementById('name').value,
+        };
+
+        try {
+            const response = await fetch('/admin/delete-product', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(productData),
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('Failed to delete product. Response status:', response.status, 'Error text:', errorText);
+                throw new Error(`Failed to delete product with status: ${response.status}`);
+            }
+
+            const result = await response.json();
+            console.log('Product delete response:', result);
+
+            location.reload();
+
+        } catch (error) {
+            console.error('Error in product delete process:', error);
+        }
+    };
+
+    document.getElementById('add-btn').onclick = function () {
+        document.getElementById('create-Modal').style.display = 'block';
+    };
+
+    const createForm = document.getElementById('createProductForm');
+    createForm.onsubmit = async (event) => {
+        event.preventDefault();  
+        const productData = {
+            name: document.getElementById('create-name').value,
+            price: document.getElementById('create-price').value,
+            stock: document.getElementById('create-stock').value,
+            isAvailable: document.getElementById('create-isAvailable').checked,
+            sold: 0,
+            type: document.getElementById('create-type').value,
+            occasion: document.getElementById('create-occasion').value,
+            imgSrc: document.getElementById('create-imgSrc').value,
+            color: document.getElementById('create-color').value
+        };
+        try {
+            const response = await fetch('/admin/create-product', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(productData),
+            });
+
+            if (!response.ok) {
+                console.error('Failed to create product. Response status:', response.status);
+                const errorText = await response.text();
+                console.error('Error response text:', errorText);
+                throw new Error(`Failed to create product with status: ${response.status}`);
+            }
+
+            const result = await response.json();
+            console.log('Product create response:', result);  
+
+            location.reload();
+
+        } catch (error) {
+            console.error('Error in product create process:', error);
+        }
+    };
+  
     log.onclick = (event) => {
         if(log.innerText === 'Logout') {
             event.preventDefault();
