@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "selenium-side-runner --config-file ./tests/selenium/.side.yml ./tests/selenium/tests.side",
+    "build": "node index.js"
   },
   "author": "",
   "license": "ISC",
@@ -20,6 +21,7 @@
   },
   "type": "module",
   "devDependencies": {
-    "nodemon": "^3.1.7"
+    "nodemon": "^3.1.7",
+    "selenium-side-runner": "^4.0.12"
   }
 }

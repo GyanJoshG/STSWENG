@@ -3,30 +3,38 @@
 
 name: Node.js CI
 
-on:
-  push:
+on: 
+  push: # Run jobs when a push is detected
     branches: [ "main", "Sprint#*" ]
-  pull_request:
+  pull_request: # Run jobs when a pull request is detected
     branches: [ "main", "Sprint#*" ]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [20.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Install Chrome/Chromium and ChromeDriver
+      uses: browser-actions/setup-chrome@v1 # Uses the version 1 of setup-chrome action
+      with:
+        chrome-version: 131.0.6778.69
+        install-chromedriver: true
+        install-dependencies: true
+
+    - name: Checkout Source Code 
+      uses: actions/checkout@v4
+
+    - name: Use Node.js 20.x
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 20.x
         cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    # Uncomment the following line when tests are available
-    #- run: npm test
+
+    - name: Install Dependencies
+      run: npm ci # Install dependencies based on what's inside package-lock.json
+
+    - name: Run Build Script
+      run: npm run build --if-present
+
+    - name: Run Tests
+      run: npm test

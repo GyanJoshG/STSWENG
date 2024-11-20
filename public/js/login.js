@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const result = await res.json();
 
             if(res.ok) {
-                utils.inform(false, result.message);
+                console.log(result.message);
                 event.target.reset();
 
                 // Store the isAdmin flag in localStorage (or sessionStorage)

@@ -31,9 +31,12 @@ const loginController = {
             const match = await bcrypt.compare(password, user.password);
     
             if (match) {
-                req.session.user = { username: user.username };
-                const isAdmin = user.isAdmin === true; 
-                return res.status(200).json({ message: 'Login successful!', isAdmin });
+                req.session.user = { 
+                    username: user.username, 
+                    _id: user._id,
+                    isAdmin: user.isAdmin 
+                };
+                return res.status(200).json({ message: 'Login successful!', isAdmin: user.isAdmin });
             } else {
                 return res.status(400).json({ error: 'Invalid password.' });
             }
@@ -41,7 +44,7 @@ const loginController = {
             console.error(err);
             return res.status(500).json({ error: err.message });
         }
-    },
+    },    
     logout: (req, res) => {
         console.log('logout() called');
 

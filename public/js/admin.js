@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('Error in product update process:', error);
         }
     };
-
+  
     document.getElementById('cancel-btn').onclick = function() {
         document.getElementById('delete-Modal').style.display = 'none';
     };
@@ -177,4 +177,32 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('Error in product create process:', error);
         }
     };
+  
+    log.onclick = (event) => {
+        if(log.innerText === 'Logout') {
+            event.preventDefault();
+            const userConfirmed = confirm('Are you sure you want to log out?');
+
+            if(userConfirmed) {
+                fetch('/api/logout', // URI
+                    {
+                        method: 'post', // POST request
+                        headers: { 'Content-Type': 'application/json' }
+                    }
+                ).then(async (res) => {
+                    const result = await res.json();
+        
+                    if(res.ok) {
+                        utils.inform(false, result.message);
+                        window.location.href = '/login';
+                    } else {
+                        utils.inform(true, `Error logging out: ${result.error}`);
+                    }
+                })
+                .catch((err) => { // Catch POST request errors
+                    utils.inform(true, `Unexpected error occured: ${err}`);
+                }); 
+            }
+        }
+    }
 });
