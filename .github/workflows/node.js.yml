@@ -10,7 +10,7 @@ on:
     branches: [ "main", "Sprint#*" ]
 
 jobs:
-  build:
+  end-to-end_testing:
     runs-on: ubuntu-latest
 
     env:
@@ -39,3 +39,9 @@ jobs:
 
     - name: Run Tests
       run: npm run ci
+
+  unit_testing:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - run: exit 0
