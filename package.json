@@ -7,7 +7,7 @@
     "test-side": "selenium-side-runner --config-file ./tests/selenium/.side.yml ./tests/selenium/tests.side", 
     "start-server": "node index.js",
     "ci": "start-server-and-test start-server http://localhost:5000 test-side",
-    "test-jest": "jest"
+    "test-jest": "jest --coverage"
   },
   "author": "",
   "license": "ISC",
