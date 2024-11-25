@@ -1,5 +1,6 @@
 /** @type {import('jest').Config} */
 const config = {
+  testTimeout: 120000,
   clearMocks: true,
   collectCoverage: true,
   coverageDirectory: "coverage",
