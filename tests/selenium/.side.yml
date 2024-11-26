@@ -1,0 +1,6 @@
+capabilities:
+  browserName: 'chrome'
+  goog:chromeOptions:
+    args: # These args are essential to start Chrome
+      - headless # Browser will not be visible
+      - no-sandbox # Disable sandbox
