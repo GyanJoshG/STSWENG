@@ -468,16 +468,16 @@
       ],
       "value": ""
     }, {
-      "id": "a117f3a9-df46-4739-b6f2-2ed2584cb53c",
+      "id": "c5205970-9f21-435f-9b68-eaf35cfe5a33",
       "comment": "",
       "command": "verifyText",
-      "target": "css=h2",
+      "target": "css=.signup-text",
       "targets": [
-        ["css=h2", "css:finder"],
-        ["xpath=//h2", "xpath:position"],
-        ["xpath=//h2[contains(.,'Login')]", "xpath:innerText"]
+        ["css=.signup-text", "css:finder"],
+        ["xpath=//div[2]/p", "xpath:position"],
+        ["xpath=//p[contains(.,'No account yet? Sign Up')]", "xpath:innerText"]
       ],
-      "value": "Login"
+      "value": "No account yet? Sign Up"
     }]
   }, {
     "id": "23c08653-a607-445a-9e5d-fa3a7ed43a45",
@@ -651,16 +651,16 @@
       ],
       "value": ""
     }, {
-      "id": "a52e9090-3cec-405d-a96a-df5138d77797",
+      "id": "d59b5a2f-77a6-4787-b610-4cee4017d9af",
       "comment": "",
       "command": "verifyText",
-      "target": "css=h2",
+      "target": "css=.signup-text",
       "targets": [
-        ["css=h2", "css:finder"],
-        ["xpath=//h2", "xpath:position"],
-        ["xpath=//h2[contains(.,'Login')]", "xpath:innerText"]
+        ["css=.signup-text", "css:finder"],
+        ["xpath=//div[2]/p", "xpath:position"],
+        ["xpath=//p[contains(.,'No account yet? Sign Up')]", "xpath:innerText"]
       ],
-      "value": "Login"
+      "value": "No account yet? Sign Up"
     }]
   }, {
     "id": "6cbd6f7c-46f8-475d-adcb-97d0ad2d878c",
