@@ -43,7 +43,7 @@ const cartController = {
         const itemQuantity = Number(quantity);
 
         if (name in req.session.cart) {
-            req.session.cart[name].inCart += itemQuantity;
+            req.session.cart[name].inCart++;
         } else {
             req.session.cart[name] = { price, inCart: itemQuantity };
         }
