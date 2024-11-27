@@ -21,7 +21,9 @@ body {
 
 .logo {
     max-width: 200px;
-    height: auto;
+    height: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .nav-icons {
@@ -64,6 +66,7 @@ body {
     color: #333;
     text-decoration: none;
     font-size: 1rem;
+    
 }
 
 .navbar a {
@@ -75,13 +78,11 @@ body {
 .navbar .nav-links a:hover {
     color: #574142;
     border-bottom: 3px solid #574142;
-    padding-bottom: 0.5rem;
+    padding-top: 3px;
 }
 
 .navbar-auth .nav-links {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    justify-content: center;
 }
 
 .container {
@@ -286,22 +287,15 @@ body {
     color: #666;
 }
 
-.logo {
-    display: flex;
-    justify-content: center;
-}
 
 .login-container {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100vh;
 }
 
 .login-layout {
     display: flex;
-    width: 100vw;
-    height: 100vh;
     background-color: #f8f8f8;
     overflow: hidden;
 }
@@ -309,11 +303,11 @@ body {
 /* Left image section */
 .login-image {
     flex: 1;
-    display: flex;
+    display: block;
     align-items: center;
     justify-content: center;
-    width: auto;
-    height: 100%;
+    max-width: 100%;
+    height: auto;
     background-color: #e0e0e0;
 }
 
@@ -730,9 +724,6 @@ button {
     transform: scale(1.05);
 }
 
-button:hover {
-    transform: translateY(-2px);
-}
 
 /* Profile styles */
 .profile-link {
